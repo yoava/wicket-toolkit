@@ -4,10 +4,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.wtk.component.page.BasePage;
 import org.wtk.jquery.model.JQuery;
-
-import static org.wtk.jquery.model.JQuery.Effect;
-import static org.wtk.jquery.model.JQuery.Position.BOTTOM;
-import static org.wtk.jquery.model.JQuery.Position.LEFT;
+import org.wtk.jquery.resource.JQuerySkin;
 
 /**
  * Homepage
@@ -15,6 +12,7 @@ import static org.wtk.jquery.model.JQuery.Position.LEFT;
 public class
 		DemoIndexPage extends BasePage {
 	public DemoIndexPage() {
+		add(new JQuerySkin(JQuery.Theme.UI_LIGHTNESS));
 
 //        wrap(new StyledBorderPanel());
 //        getBodyContainer().add(new CssClass("test"));
@@ -22,7 +20,7 @@ public class
 		add(new AjaxLink("test") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				new DemoDialog().setPosition(BOTTOM, LEFT).setShowEffect(Effect.EXPLODE).setHideEffect(Effect.EXPLODE).setTitle("Title").setModal(true).setTheme(JQuery.Theme.UI_LIGHTNESS).show();
+				new DemoDialog().show();
 			}
 		});
 	}

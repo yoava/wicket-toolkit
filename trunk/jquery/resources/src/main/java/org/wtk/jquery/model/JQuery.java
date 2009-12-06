@@ -3,6 +3,9 @@ package org.wtk.jquery.model;
 import org.apache.wicket.behavior.IBehavior;
 import org.wtk.behavior.CssClass;
 import org.wtk.jquery.resource.JQuerySkin;
+import org.wtk.model.HasValue;
+
+import java.util.Arrays;
 
 /**
  * @author Yoav Aharoni
@@ -19,21 +22,20 @@ public class JQuery {
 	/**
 	 * @author Yoav Aharoni
 	 */
-	public enum Effect {
+	public enum Effect implements HasValue<String> {
 		BLIND("blind"),
 		BOUNCE("bounce"),
 		CLIP("clip"),
-		DROP("drop "),
+		DROP("drop"),
 		EXPLODE("explode"),
 		FOLD("fold"),
 		HIGHLIGHT("highlight"),
 		PUFF("puff"),
-		PULSATE("pulsate "),
+		PULSATE("pulsate"),
 		SCALE("scale"),
 		SHAKE("shake"),
 		SIZE("size"),
 		SLIDE("slide"),
-
 		TRANSFER("transfer");
 
 		private String effect;
@@ -42,7 +44,8 @@ public class JQuery {
 			this.effect = effect;
 		}
 
-		public String getEffect() {
+		@Override
+		public String getValue() {
 			return effect;
 		}
 	}
@@ -50,7 +53,7 @@ public class JQuery {
 	/**
 	 * @author Yoav Aharoni
 	 */
-	public enum Theme {
+	public enum Theme implements HasValue<String> {
 		BLACK_TIE("black-tie"),
 		BLITZER("blitzer"),
 		CUPERTINO("cupertino"),
@@ -83,26 +86,55 @@ public class JQuery {
 			this.theme = theme;
 		}
 
-		public String getTheme() {
-			return theme;
-		}
-
 		public IBehavior createCssScopeBehavior() {
 			return new CssClass("." + theme);
 		}
+
+		@Override
+		public String getValue() {
+			return theme;
+		}
 	}
 
-	public enum Position {
-		CENTER("center"), LEFT("left"), RIGHT("right"), TOP("top"), BOTTOM("bottom");
+	public static class Position implements HasValue<String[]> {
+		public static final Position LEFT_TOP = new Position("left", "top");
+		public static final Position LEFT_CENTER = new Position("left", "center");
+		public static final Position LEFT_BOTTOM = new Position("left", "bottom");
+		public static final Position CENTER_TOP = new Position("center", "top");
+		public static final Position CENTER_CENTER = new Position("center", "center");
+		public static final Position CENTER_BOTTOM = new Position("center", "bottom");
+		public static final Position RIGHT_TOP = new Position("right", "top");
+		public static final Position RIGHT_CENTER = new Position("right", "center");
+		public static final Position RIGHT_BOTTOM = new Position("right", "bottom");
 
-		private String position;
+		private final String[] position;
 
-		Position(String position) {
-			this.position = position;
+		public Position(int x, int y) {
+			this(String.valueOf(x), String.valueOf(y));
 		}
 
-		public String getPosition() {
+		private Position(String x, String y) {
+			position = new String[]{x, y};
+		}
+
+		@Override
+		public String[] getValue() {
 			return position;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Position that = (Position) o;
+			return Arrays.equals(position, that.position);
+
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(position);
 		}
 	}
 }

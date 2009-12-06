@@ -2,16 +2,21 @@ package org.wtk.jquery.ui.dialog;
 
 import net.sf.json.JSONObject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.value.ValueMap;
 import org.wtk.api.Titled;
+import org.wtk.behavior.ajax.AjaxEvent;
 import org.wtk.component.panel.base.BasePanel;
 import org.wtk.component.support.plugin.PluginManager;
 import org.wtk.jquery.model.JQuery;
+import org.wtk.jquery.model.JQueryOption;
+import org.wtk.jquery.ui.util.JQueryOptionSerializer;
 
 import java.io.Serializable;
 
-import static org.wtk.component.list.CollectionPanel.ITEM_ID;
+import static java.lang.String.format;
+import static org.wtk.component.list.ItemsContainer.ITEM_ID;
+import static org.wtk.jquery.model.JQuery.Position;
 
 
 /**
@@ -22,45 +27,38 @@ import static org.wtk.component.list.CollectionPanel.ITEM_ID;
  * @author Yoav Aharoni
  */
 public class JQueryDialog<T extends Serializable> extends BasePanel<T> implements Titled {
-	private ValueMap options;
+	private static JQueryOptionSerializer<JQueryDialog> optionSerializer = new JQueryOptionSerializer<JQueryDialog>(JQueryDialog.class);
+
+	private boolean bgiFrame = false;
+	private boolean draggable = true;
+	private boolean modal = true;
+	private boolean resizable = true;
+	private String closeText;
+	private String cssClass;
+	private JQuery.Effect hideEffect;
+	private JQuery.Effect showEffect;
+	private Integer height;
+	private Integer minHeight = 150;
+	private Integer maxHeight;
+	private Integer width = 300;
+	private Integer minWidth = 150;
+	private Integer maxWidth;
+	private Position position = Position.CENTER_CENTER;
+	private String title;
+	private int zIndex = 1000;
+
+	private AjaxEvent closeEvent;
 
 	public JQueryDialog() {
-		super(ITEM_ID);
+		this(null);
 	}
 
 	public JQueryDialog(IModel model) {
 		super(ITEM_ID, model);
-	}
 
-	{
 		setOutputMarkupPlaceholderTag(true);
-		initOptions();
-	}
-
-	private void initOptions() {
-		options = new ValueMap();
-		options.put(Option.AUTO_OPEN.getKey(), true);
-		options.put("bgiframe", false);
-		options.put("buttons", null);
-		options.put(Option.CLOSE_ON_ESCAPE.getKey(), true);
-		options.put("closeText", null);
-		options.put("dialogClass", null);
-		options.put(Option.DRAGGABLE.getKey(), true);
-		options.put("hide", null);
-		options.put("height", null);
-		options.put("maxHeight", null);
-		options.put("maxWidth", null);
-		options.put("minHeight", 150);
-		options.put("minWidth", 150);
-		options.put(Option.MODAL.getKey(), false);
-		options.put("pocsition", "center");
-		options.put(Option.RESIZABLE.getKey(), true);
-		options.put(Option.STACK.getKey(), true);
-		options.put("title", null);
-		options.put("width", 400);
-		options.put("zIndex", 1000);
-		options.put("show", null);
-		options.put("close", "alert(1)");
+		closeEvent = new AjaxCloseEvent();
+		add(closeEvent);
 	}
 
 	public void show() {
@@ -72,11 +70,18 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	}
 
 	public String getShowScript() {
-		return String.format("jQuery('#%s').dialog(%s);", getMarkupId(), getOptionsJson());
+		return format("jQuery('#%s').wtk('dialog','show',%s);", getMarkupId(), getOptionsJson());
 	}
 
 	public String getCloseScript() {
-		return String.format("jQuery('#%s').dialog('close');", getMarkupId());
+		return format("jQuery('#%s').wtk('dialog','close');", getMarkupId());
+	}
+
+	protected String getDestroyScript() {
+		return format("jQuery('#%s').wtk('dialog','destroy');", getMarkupId());
+	}
+
+	protected void onCloseButtonClicked(AjaxRequestTarget target) {
 	}
 
 	protected void onShow(AjaxRequestTarget target) {
@@ -85,206 +90,237 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	protected void onClose(AjaxRequestTarget target) {
 	}
 
-	private JQueryDialogPlugin getPlugin() {
-		return PluginManager.get().getPlugin(JQueryDialogPlugin.class);
+	protected JSONObject getOptionsJson() {
+		return optionSerializer.toJSON(this);
 	}
 
-	private JSONObject getOptionsJson() {
-		options.put("closeText", getCloseText());
-		options.put("title", getTitle());
-		return JSONObject.fromObject(options);
+	public JQueryDialog<T> setTheme(JQuery.Theme theme) {
+		add(JQuery.createScopedTheme(theme));
+		return setCssClass(theme.getValue());
 	}
 
+	@JQueryOption()
+	public String getButtons() {
+		return null;
+	}
+
+	@JQueryOption(name = "close")
+	public final String getInternalCloseScript() {
+		return closeEvent.getFunction();
+	}
+
+	@JQueryOption()
 	public String getCloseText() {
-		return getString("jquery.dialog.close");
+		if (closeText == null) {
+			closeText = getSafeString("jquery.dialog.close");
+		}
+		return closeText;
+	}
+
+	public JQueryDialog<T> setCloseText(String closeText) {
+		this.closeText = closeText;
+		return this;
+	}
+
+	@JQueryOption(name = "dialogClass")
+	public String getCssClass() {
+		return cssClass;
+	}
+
+	public JQueryDialog<T> setCssClass(String cssClass) {
+		this.cssClass = cssClass;
+		return this;
+	}
+
+	@JQueryOption(name = "hide")
+	public JQuery.Effect getHideEffect() {
+		return hideEffect;
+	}
+
+	public JQueryDialog<T> setHideEffect(JQuery.Effect hideEffect) {
+		this.hideEffect = hideEffect;
+		return this;
+	}
+
+	@JQueryOption(name = "show")
+	public JQuery.Effect getShowEffect() {
+		return showEffect;
+	}
+
+	public JQueryDialog<T> setShowEffect(JQuery.Effect showEffect) {
+		this.showEffect = showEffect;
+		return this;
+	}
+
+	@JQueryOption()
+	public Integer getHeight() {
+		return height;
+	}
+
+	public JQueryDialog<T> setHeight(Integer height) {
+		this.height = height;
+		return this;
+	}
+
+	@JQueryOption()
+	public Integer getMinHeight() {
+		return minHeight;
+	}
+
+	public JQueryDialog<T> setMinHeight(Integer minHeight) {
+		this.minHeight = minHeight;
+		return this;
+	}
+
+	@JQueryOption()
+	public Integer getMaxHeight() {
+		return maxHeight;
+	}
+
+	public JQueryDialog<T> setMaxHeight(Integer maxHeight) {
+		this.maxHeight = maxHeight;
+		return this;
+	}
+
+	@JQueryOption()
+	public Integer getWidth() {
+		return width;
+	}
+
+	public JQueryDialog<T> setWidth(Integer width) {
+		this.width = width;
+		return this;
+	}
+
+	@JQueryOption()
+	public Integer getMinWidth() {
+		return minWidth;
+	}
+
+	public JQueryDialog<T> setMinWidth(Integer minWidth) {
+		this.minWidth = minWidth;
+		return this;
+	}
+
+	@JQueryOption()
+	public Integer getMaxWidth() {
+		return maxWidth;
+	}
+
+	public JQueryDialog<T> setMaxWidth(Integer maxWidth) {
+		this.maxWidth = maxWidth;
+		return this;
+	}
+
+	@JQueryOption()
+	public Position getPosition() {
+		return position;
+	}
+
+	public JQueryDialog<T> setPosition(Position position) {
+		this.position = position;
+		return this;
 	}
 
 	@Override
+	@JQueryOption()
 	public String getTitle() {
-		final String title = options.getString("title");
 		if (title == null) {
-			return getString("jquery.dialog.title");
+			title = getSafeString("jquery.dialog.title");
 		}
 		return title;
 	}
 
 	public JQueryDialog<T> setTitle(String title) {
-		options.put("title", title);
+		this.title = title;
 		return this;
 	}
 
-	public String getDialogCssClass() {
-		return options.getString("dialogClass");
-	}
-
-	public JQueryDialog<T> setDialogCssClass(String cssClass) {
-		options.put("dialogClass", cssClass);
-		return this;
-	}
-
-	public String getHideEffect() {
-		return options.getString("hide");
-	}
-
-	public JQueryDialog<T> setHideEffect(JQuery.Effect effect) {
-		options.put("hide", effect.getEffect());
-		return this;
-	}
-
-	public String getShowEffect() {
-		return options.getString("show");
-	}
-
-	public JQueryDialog<T> setShowEffect(JQuery.Effect effect) {
-		options.put("show", effect.getEffect());
-		return this;
-	}
-
-	public int getWidth() {
-		return options.getInt("width");
-	}
-
-	public JQueryDialog<T> setWidth(int width) {
-		options.put("width", width);
-		return this;
-	}
-
-	public int getHeight() {
-		return options.getInt("height");
-	}
-
-	public JQueryDialog<T> setHeight(int height) {
-		options.put("height", height);
-		return this;
-	}
-
-	public int getMaxWidth() {
-		return options.getInt("maxWidth");
-	}
-
-	public JQueryDialog<T> setMaxWidth(int maxWidth) {
-		options.put("maxWidth", maxWidth);
-		return this;
-	}
-
-	public int getMaxHeight() {
-		return options.getInt("maxHeight");
-	}
-
-	public JQueryDialog<T> setMaxHeight(int maxHeight) {
-		options.put("maxHeight", maxHeight);
-		return this;
-	}
-
-	public int getMinWidth() {
-		return options.getInt("minWidth");
-	}
-
-	public JQueryDialog<T> setMinWidth(int minWidth) {
-		options.put("minWidth", minWidth);
-		return this;
-	}
-
-	public int getMinHeight() {
-		return options.getInt("minHeight");
-	}
-
-	public JQueryDialog<T> setMinHeight(int minHeight) {
-		options.put("minHeight", minHeight);
-		return this;
-	}
-
+	@JQueryOption(name = "zIndex")
 	public int getZIndex() {
-		return options.getInt("zIndex");
+		return zIndex;
 	}
 
 	public JQueryDialog<T> setZIndex(int zIndex) {
-		options.put("zIndex", zIndex);
+		this.zIndex = zIndex;
 		return this;
 	}
 
-	public JQuery.Position[] getPosition() {
-		return (JQuery.Position[]) options.get("position");
+	@JQueryOption()
+	public boolean isAutoOpen() {
+		return true;
 	}
 
-	public JQueryDialog<T> setPosition(JQuery.Position... position) {
-		options.put("position", position);
-		return this;
-	}
-
-	public JQueryDialog<T> setTheme(JQuery.Theme theme) {
-		add(JQuery.createScopedTheme(theme));
-		return setDialogCssClass(theme.getTheme());
-	}
-
+	@JQueryOption(name = "bgiframe")
 	public boolean isBgiFrame() {
-		return getOption(Option.BGI_FRAME);
+		return bgiFrame;
 	}
 
-	public JQueryDialog<T> setBgiFrame(boolean enabled) {
-		return setOption(Option.BGI_FRAME, enabled);
-	}
-
-	public boolean isCloseOnEscape() {
-		return getOption(Option.CLOSE_ON_ESCAPE);
-	}
-
-	public JQueryDialog<T> setCloseOnEscape(boolean enabled) {
-		return setOption(Option.CLOSE_ON_ESCAPE, enabled);
-	}
-
-	public boolean isDraggable() {
-		return getOption(Option.DRAGGABLE);
-	}
-
-	public JQueryDialog<T> setDraggable(boolean enabled) {
-		return setOption(Option.DRAGGABLE, enabled);
-	}
-
-	public boolean isModal() {
-		return getOption(Option.MODAL);
-	}
-
-	public JQueryDialog<T> setModal(boolean enabled) {
-		return setOption(Option.MODAL, enabled);
-	}
-
-	public boolean isResizable() {
-		return getOption(Option.RESIZABLE);
-	}
-
-	public JQueryDialog<T> setResizable(boolean enabled) {
-		return setOption(Option.RESIZABLE, enabled);
-	}
-
-	public boolean isStacked() {
-		return getOption(Option.STACK);
-	}
-
-	public JQueryDialog<T> setStacked(boolean enabled) {
-		return setOption(Option.STACK, enabled);
-	}
-
-	private boolean getOption(Option option) {
-		return options.getBoolean(option.getKey());
-	}
-
-	private JQueryDialog<T> setOption(Option option, boolean enabled) {
-		options.put(option.getKey(), enabled);
+	public JQueryDialog<T> setBgiFrame(boolean bgiFrame) {
+		this.bgiFrame = bgiFrame;
 		return this;
 	}
 
-	private enum Option {
-		AUTO_OPEN("autoOpen"), BGI_FRAME("bgiframe"), CLOSE_ON_ESCAPE("closeOnEscape"), DRAGGABLE("draggable"), MODAL("modal"), RESIZABLE("resizable"), STACK("stack");
+	@JQueryOption()
+	public boolean isCloseOnEscape() {
+		return true;
+	}
 
-		private String key;
+	@JQueryOption()
+	public boolean isDraggable() {
+		return draggable;
+	}
 
-		Option(String key) {
-			this.key = key;
+	public JQueryDialog<T> setDraggable(boolean draggable) {
+		this.draggable = draggable;
+		return this;
+	}
+
+	@JQueryOption()
+	public boolean isModal() {
+		return modal;
+	}
+
+	public JQueryDialog<T> setModal(boolean modal) {
+		this.modal = modal;
+		return this;
+	}
+
+	@JQueryOption()
+	public boolean isResizable() {
+		return resizable;
+	}
+
+	public JQueryDialog<T> setResizable(boolean resizable) {
+		this.resizable = resizable;
+		return this;
+	}
+
+	@JQueryOption()
+	public boolean isStack() {
+		return true;
+	}
+
+	protected IAjaxCallDecorator getAjaxCallDecorator() {
+		return null;
+	}
+
+	private JQueryDialogPlugin getPlugin() {
+		return PluginManager.get().getPlugin(JQueryDialogPlugin.class);
+	}
+
+	private class AjaxCloseEvent extends AjaxEvent {
+		@Override
+		protected void onEvent(AjaxRequestTarget target) {
+			onCloseButtonClicked(target);
+			onClose(target);
+			getPlugin().removeDialog(JQueryDialog.this);
+			target.appendJavascript(getDestroyScript());
 		}
 
-		private String getKey() {
-			return key;
+		@Override
+		protected IAjaxCallDecorator getAjaxCallDecorator() {
+			return JQueryDialog.this.getAjaxCallDecorator();
 		}
 	}
 }

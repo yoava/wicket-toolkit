@@ -1,4 +1,4 @@
-package org.wtk.behavior;
+package org.wtk.behavior.head;
 
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;

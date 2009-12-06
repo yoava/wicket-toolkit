@@ -5,10 +5,7 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.resolver.IComponentResolver;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.*;
 import org.wtk.component.support.border.BorderSupport;
 import org.wtk.component.support.border.IBorderSupport;
 
@@ -170,5 +167,9 @@ public class BasePanel<T extends Serializable> extends Panel implements IBorderS
 			final Object value = getObject();
 			return value == null ? null : value.toString();
 		}
+	}
+
+	public String getSafeString(String key) {
+		return getString(key, new Model(this), "");
 	}
 }

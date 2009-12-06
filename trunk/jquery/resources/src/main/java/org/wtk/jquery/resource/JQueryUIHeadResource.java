@@ -1,6 +1,6 @@
 package org.wtk.jquery.resource;
 
-import org.wtk.behavior.HeadResource;
+import org.wtk.behavior.head.HeadResource;
 
 
 /**
