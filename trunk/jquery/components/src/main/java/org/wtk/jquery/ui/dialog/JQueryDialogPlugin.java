@@ -1,6 +1,8 @@
 package org.wtk.jquery.ui.dialog;
 
+import org.apache.wicket.Response;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.util.string.JavascriptUtils;
 import org.wtk.behavior.CssClass;
 import org.wtk.behavior.head.HeadResource;
 import org.wtk.component.list.ItemsContainer;
@@ -27,12 +29,29 @@ public class JQueryDialogPlugin extends Plugin {
 		super.onAfterRender();
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
 		if (target != null) {
-			target.appendJavascript("jQuery.wtk.dialog.cleanup();");
-			final Iterator<JQueryDialog> dialogIterator = getDialogContainer().getItemsIterator();
-			while (dialogIterator.hasNext()) {
-				final JQueryDialog dialog = dialogIterator.next();
-				target.appendJavascript(dialog.getShowScript());
-			}
+			refreshDialogsOnAjax(target);
+		} else {
+			renderDialogsOnWebResponse();
+		}
+	}
+
+	private void renderDialogsOnWebResponse() {
+		final Response response = getResponse();
+		JavascriptUtils.writeOpenTag(response);
+		final Iterator<JQueryDialog> dialogIterator = getDialogContainer().getItemsIterator();
+		while (dialogIterator.hasNext()) {
+			final JQueryDialog dialog = dialogIterator.next();
+			response.write(dialog.getShowScript());
+		}
+		JavascriptUtils.writeCloseTag(response);
+	}
+
+	private void refreshDialogsOnAjax(AjaxRequestTarget target) {
+		target.appendJavascript("jQuery.wtk.dialog.cleanup();");
+		final Iterator<JQueryDialog> dialogIterator = getDialogContainer().getItemsIterator();
+		while (dialogIterator.hasNext()) {
+			final JQueryDialog dialog = dialogIterator.next();
+			target.appendJavascript(dialog.getShowScript());
 		}
 	}
 
@@ -41,16 +60,20 @@ public class JQueryDialogPlugin extends Plugin {
 		return (ItemsContainer<JQueryDialog>) get(CONTAINER_ID);
 	}
 
-	protected void show(JQueryDialog dialog) {
+	public void show(JQueryDialog dialog) {
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
 		addDialog(dialog);
 		dialog.onShow(target);
-		target.appendJavascript(dialog.getShowScript());
+		if (target != null) {
+			target.appendJavascript(dialog.getShowScript());
+		}
 	}
 
-	protected void close(JQueryDialog dialog) {
+	public void close(JQueryDialog dialog) {
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
-		target.appendJavascript(dialog.getCloseScript());
+		if (target != null) {
+			target.appendJavascript(dialog.getCloseScript());
+		}
 		dialog.onClose(target);
 		removeDialog(dialog);
 	}
