@@ -3,6 +3,7 @@ package org.wtk.jquery.ui.dialog;
 import net.sf.json.JSONObject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.wtk.api.Titled;
 import org.wtk.behavior.ajax.AjaxEvent;
@@ -46,11 +47,16 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	private Position position = Position.CENTER_CENTER;
 	private String title;
 	private int zIndex = 1000;
-
+	private JQueryDialog wrappingDialog;
 	private AjaxEvent closeEvent;
 
 	public JQueryDialog() {
 		this(null);
+	}
+
+	public BasePanel wrap(Form form) {
+		wrappingDialog = new JQueryDialogFormWrapper(this, form);
+		return this;
 	}
 
 	public JQueryDialog(IModel model) {
@@ -61,6 +67,10 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		add(closeEvent);
 	}
 
+	JQueryDialog getWrappingDialog() {
+		return wrappingDialog;
+	}
+
 	public void show() {
 		getPlugin().show(this);
 	}
@@ -69,11 +79,11 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		getPlugin().close(this);
 	}
 
-	public String getShowScript() {
+	protected String getShowScript() {
 		return format("jQuery('#%s').wtk('dialog','show',%s);", getMarkupId(), getOptionsJson());
 	}
 
-	public String getCloseScript() {
+	protected String getCloseScript() {
 		return format("jQuery('#%s').wtk('dialog','close');", getMarkupId());
 	}
 
@@ -312,10 +322,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	private class AjaxCloseEvent extends AjaxEvent {
 		@Override
 		protected void onEvent(AjaxRequestTarget target) {
-			onCloseButtonClicked(target);
-			onClose(target);
-			getPlugin().removeDialog(JQueryDialog.this);
-			target.appendJavascript(getDestroyScript());
+			getPlugin().handleCloseButtonClick(JQueryDialog.this, target);
 		}
 
 		@Override

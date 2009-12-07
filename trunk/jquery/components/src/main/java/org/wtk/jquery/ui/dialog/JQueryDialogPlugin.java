@@ -61,6 +61,12 @@ public class JQueryDialogPlugin extends Plugin {
 	}
 
 	public void show(JQueryDialog dialog) {
+		final JQueryDialog wrapper = dialog.getWrappingDialog();
+		if (wrapper != null) {
+			show(wrapper);
+			return;
+		}
+
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
 		addDialog(dialog);
 		dialog.onShow(target);
@@ -70,12 +76,31 @@ public class JQueryDialogPlugin extends Plugin {
 	}
 
 	public void close(JQueryDialog dialog) {
+		final JQueryDialog wrapper = dialog.getWrappingDialog();
+		if (wrapper != null) {
+			close(wrapper);
+			return;
+		}
+
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
 		if (target != null) {
 			target.appendJavascript(dialog.getCloseScript());
 		}
 		dialog.onClose(target);
 		removeDialog(dialog);
+	}
+
+	protected void handleCloseButtonClick(JQueryDialog dialog, AjaxRequestTarget target) {
+		final JQueryDialog wrapper = dialog.getWrappingDialog();
+		if (wrapper != null) {
+			handleCloseButtonClick(wrapper, target);
+			return;
+		}
+
+		dialog.onCloseButtonClicked(target);
+		dialog.onClose(target);
+		removeDialog(dialog);
+		target.appendJavascript(dialog.getDestroyScript());
 	}
 
 	protected void addDialog(JQueryDialog dialog) {

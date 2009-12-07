@@ -12,11 +12,11 @@ import java.util.Arrays;
  */
 public class JQuery {
 	public static JQuerySkin getGlobalTheme(final Theme theme) {
-		return new JQuerySkin(theme, true);
+		return new JQuerySkin(theme, false);
 	}
 
 	public static JQuerySkin createScopedTheme(final Theme theme) {
-		return new JQuerySkin(theme, false);
+		return new JQuerySkin(theme, true);
 	}
 
 	/**
