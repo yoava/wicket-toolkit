@@ -31,5 +31,4 @@ public class DemoDialog extends JQueryDialog {
 		});
 		add(new JQueryDialogCloseLink("close"));
 	}
-
 }

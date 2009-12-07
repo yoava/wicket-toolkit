@@ -1,6 +1,7 @@
 package org.wtk.component.list;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -38,7 +39,10 @@ public class ItemsContainer<T extends Component> extends Panel {
 		if (!item.getId().equals(ITEM_ID)) {
 			throw new IllegalArgumentException(String.format("Item must have id=\"%s\" (id is \"%s\"). Please use ItemsContainer.ITEM_ID", ITEM_ID, item.getId()));
 		}
-		getItemsContainer().add(new ItemContainer(item));
+		final RepeatingView itemsContainer = getItemsContainer();
+		final MarkupContainer container = new WebMarkupContainer(itemsContainer.newChildId());
+		itemsContainer.add(container);
+		container.add(item);
 	}
 
 	public void removeItem(T item) {
@@ -54,11 +58,11 @@ public class ItemsContainer<T extends Component> extends Panel {
 
 	@SuppressWarnings({"unchecked"})
 	public void internalRemoveItem(T item) {
-		final Iterator iterator = getItemsContainer().iterator();
+		final Iterator<T> iterator = getItemsIterator();
 		while (iterator.hasNext()) {
-			final ItemContainer container = (ItemContainer) iterator.next();
-			if (container.getItem().equals(item)) {
-				container.remove();
+			final T current = iterator.next();
+			if (current.equals(item)) {
+				current.getParent().remove();
 				return;
 			}
 		}
@@ -79,19 +83,6 @@ public class ItemsContainer<T extends Component> extends Panel {
 		return (RepeatingView) get("items");
 	}
 
-	private class ItemContainer extends WebMarkupContainer {
-		private ItemContainer(T item) {
-			super(getItemsContainer().newChildId());
-			add(item);
-			setRenderBodyOnly(true);
-		}
-
-		@SuppressWarnings({"unchecked"})
-		public T getItem() {
-			return (T) get(ITEM_ID);
-		}
-	}
-
 	private class ItemsIterator implements Iterator<T> {
 		private Iterator containerIterator = getItemsContainer().iterator();
 
@@ -103,8 +94,8 @@ public class ItemsContainer<T extends Component> extends Panel {
 		@SuppressWarnings({"unchecked"})
 		@Override
 		public T next() {
-			final ItemContainer container = (ItemContainer) containerIterator.next();
-			return container.getItem();
+			final MarkupContainer container = (MarkupContainer) containerIterator.next();
+			return (T) container.get(ITEM_ID);
 		}
 
 		@Override
