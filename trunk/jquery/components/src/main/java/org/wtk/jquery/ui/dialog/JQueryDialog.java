@@ -6,7 +6,7 @@ import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.wtk.api.Titled;
-import org.wtk.behavior.ajax.AjaxEvent;
+import org.wtk.behavior.ajax.EventlessAjaxBehavior;
 import org.wtk.component.panel.base.BasePanel;
 import org.wtk.component.support.plugin.PluginManager;
 import org.wtk.jquery.model.JQuery;
@@ -48,7 +48,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	private String title;
 	private int zIndex = 1000;
 	private JQueryDialog wrappingDialog;
-	private AjaxEvent closeEvent;
+	private EventlessAjaxBehavior closeEvent;
 
 	public JQueryDialog() {
 		this(null);
@@ -116,7 +116,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 
 	@JQueryOption(name = "close")
 	public final String getInternalCloseScript() {
-		return closeEvent.getFunction();
+		return closeEvent.getCallFunction();
 	}
 
 	@JQueryOption()
@@ -319,7 +319,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		return PluginManager.get().getPlugin(JQueryDialogPlugin.class);
 	}
 
-	private class AjaxCloseEvent extends AjaxEvent {
+	private class AjaxCloseEvent extends EventlessAjaxBehavior {
 		@Override
 		protected void onEvent(AjaxRequestTarget target) {
 			getPlugin().handleCloseButtonClick(JQueryDialog.this, target);
