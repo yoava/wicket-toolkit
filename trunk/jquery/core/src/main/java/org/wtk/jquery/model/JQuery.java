@@ -1,7 +1,7 @@
 package org.wtk.jquery.model;
 
 import org.apache.wicket.behavior.IBehavior;
-import org.wtk.behavior.CssClass;
+import org.wtk.behavior.css.CssClass;
 import org.wtk.jquery.resource.JQuerySkin;
 import org.wtk.model.HasValue;
 

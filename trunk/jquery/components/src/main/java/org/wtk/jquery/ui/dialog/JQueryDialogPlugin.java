@@ -1,7 +1,7 @@
 package org.wtk.jquery.ui.dialog;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wtk.behavior.CssClass;
+import org.wtk.behavior.css.CssClass;
 import org.wtk.behavior.head.HeadResource;
 import org.wtk.component.list.ItemsContainer;
 import org.wtk.component.support.plugin.Plugin;

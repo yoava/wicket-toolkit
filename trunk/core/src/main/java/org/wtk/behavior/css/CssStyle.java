@@ -1,4 +1,4 @@
-package org.wtk.behavior;
+package org.wtk.behavior.css;
 
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.AbstractReadOnlyModel;

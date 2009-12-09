@@ -1,7 +1,7 @@
 package org.wtk.component.support.plugin;
 
 import org.apache.wicket.Page;
-import org.wtk.behavior.CssStyle;
+import org.wtk.behavior.css.CssStyle;
 import org.wtk.component.list.ItemsContainer;
 
 import java.util.Iterator;
