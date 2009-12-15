@@ -3,7 +3,7 @@ package org.wtk.jquery.ui.dialog;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.wtk.behavior.css.CssClass;
 import org.wtk.behavior.head.HeadResource;
-import org.wtk.component.list.ItemsContainer;
+import org.wtk.component.list.ComponentListView;
 import org.wtk.component.support.plugin.Plugin;
 import org.wtk.jquery.resource.JQueryUIHeadResource;
 
@@ -21,7 +21,7 @@ public class JQueryDialogPlugin extends Plugin {
 		add(new HeadResource(JQueryDialogPlugin.class).addJavaScript()
 				.dependsOn(new JQueryUIHeadResource()));
 
-		add(new ItemsContainer<JQueryDialog>(CONTAINER_ID).add(new CssClass("wtk-jq-dialogs")));
+		add(new ComponentListView<JQueryDialog>(CONTAINER_ID).add(new CssClass("wtk-jq-dialogs")));
 	}
 
 	public void show(JQueryDialog dialog) {
@@ -65,8 +65,8 @@ public class JQueryDialogPlugin extends Plugin {
 	}
 
 	@SuppressWarnings({"unchecked"})
-	private ItemsContainer<JQueryDialog> getDialogContainer() {
-		return (ItemsContainer<JQueryDialog>) get(CONTAINER_ID);
+	private ComponentListView<JQueryDialog> getDialogContainer() {
+		return (ComponentListView<JQueryDialog>) get(CONTAINER_ID);
 	}
 
 	private String getRenderScript() {

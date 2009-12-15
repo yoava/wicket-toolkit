@@ -1,14 +1,14 @@
 package org.wtk.component.support.plugin;
 
 import org.apache.wicket.Page;
-import org.wtk.component.list.ItemsContainer;
+import org.wtk.component.list.ComponentListView;
 
 import java.util.Iterator;
 
 /**
  * @author Yoav Aharoni
  */
-public class PluginManager extends ItemsContainer<Plugin> implements IPluginManager {
+public class PluginManager extends ComponentListView<Plugin> implements IPluginManager {
 	private static IPluginManagerLocator locator = new HierarchyPluginManagerLocator();
 
 	public PluginManager(String id) {

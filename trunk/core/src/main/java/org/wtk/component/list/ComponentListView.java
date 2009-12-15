@@ -16,10 +16,10 @@ import java.util.Iterator;
 /**
  * @author Yoav Aharoni
  */
-public class ItemsContainer<T extends Component> extends Panel {
+public class ComponentListView<T extends Component> extends Panel {
 	public static final String ITEM_ID = "item";
 
-	public ItemsContainer(String id) {
+	public ComponentListView(String id) {
 		super(id);
 		setOutputMarkupId(true);
 		add(new WicketToolkitHeadResource());

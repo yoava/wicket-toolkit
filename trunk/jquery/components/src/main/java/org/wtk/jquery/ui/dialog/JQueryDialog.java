@@ -17,7 +17,7 @@ import org.wtk.jquery.ui.util.JQueryOptionSerializer;
 import java.io.Serializable;
 
 import static java.lang.String.format;
-import static org.wtk.component.list.ItemsContainer.ITEM_ID;
+import static org.wtk.component.list.ComponentListView.ITEM_ID;
 import static org.wtk.jquery.model.JQuery.Position;
 
 
