@@ -1,22 +1,21 @@
 package org.wtk.behavior.head;
 
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.AbstractHeaderContributor;
+import org.apache.wicket.IClusterable;
+import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.PackageResource;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.util.io.Streams;
-import org.apache.wicket.util.string.CssUtils;
+import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
+import org.apache.wicket.util.string.JavascriptStripper;
 import org.apache.wicket.util.string.interpolator.PropertyVariableInterpolator;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Arrays.asList;
 
 /**
  * Improved version of HeaderContributor: <ul>
@@ -26,138 +25,223 @@ import static java.util.Arrays.asList;
  *
  * @author Yoav Aharoni
  */
-public class HeadResource extends AbstractHeaderContributor {
-	private List<IHeaderContributor> tempList = new ArrayList<IHeaderContributor>();
+public class HeadResource extends AbstractBehavior implements IHeaderContributor {
 	private Class<?> scope;
-	private IHeaderContributor[] headerContributors;
-
-	protected HeadResource() {
-		scope = getClass();
-	}
+	private List<Resource> resources = new ArrayList<Resource>();
 
 	public HeadResource(Class<?> scope) {
 		this.scope = scope;
 	}
 
-	public HeadResource dependsOn(HeadResource resourcePackage) {
-		tempList.addAll(0, asList(resourcePackage.getHeaderContributors()));
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		final Context context = new RenderContext();
+		for (Resource resource : resources) {
+			resource.renderHead(response, context);
+		}
+	}
+
+	public HeadResource dependsOn(IHeaderContributor headerContributor) {
+		resources.add(0, new DependencyResource(headerContributor));
 		return this;
 	}
 
 	public HeadResource addCss() {
-		return addCss(getDefalutCssPath());
+		resources.add(new CssResource(scope.getSimpleName() + ".css", null));
+		return this;
+	}
+
+	public HeadResource addCss(String relativePath) {
+		resources.add(new CssResource(relativePath, null));
+		return this;
+	}
+
+	public HeadResource addCss(String relativePath, String media) {
+		resources.add(new CssResource(relativePath, media));
+		return this;
 	}
 
 	public HeadResource addJavaScript() {
-		return addJavaScript(getDefaultJavaScriptPath());
-	}
-
-	public HeadResource addCssTemplate() {
-		return addCssTemplate(getDefalutCssPath());
-	}
-
-	public HeadResource addJavaScriptTemplate() {
-		return addJavaScriptTemplate(getDefaultJavaScriptPath());
-	}
-
-	public HeadResource addCss(final String path) {
-		return addCss(path, null);
-	}
-
-	public HeadResource addCss(final String path, final String media) {
-		addContributor(new IHeaderContributor() {
-			@Override
-			public void renderHead(IHeaderResponse response) {
-				response.renderCSSReference(new CompressedResourceReference(scope, path), media);
-			}
-		});
+		resources.add(new JsResource(scope.getSimpleName() + ".js"));
 		return this;
 	}
 
-	public HeadResource addJavaScript(final String path) {
-		addContributor(new IHeaderContributor() {
-			@Override
-			public void renderHead(IHeaderResponse response) {
-				response.renderJavascriptReference(new JavascriptResourceReference(scope, path));
-			}
-		});
+	public HeadResource addJavaScript(String relativePath) {
+		resources.add(new JsResource(relativePath));
 		return this;
 	}
 
-	public HeadResource addCssTemplate(final String path) {
-		addContributor(new IHeaderContributor() {
-			@Override
-			public void renderHead(IHeaderResponse response) {
-				response.renderString(
-						CssUtils.INLINE_OPEN_TAG + readInterpolatedString(path) + CssUtils.INLINE_CLOSE_TAG);
-			}
-		});
+	public HeadResource setCached(boolean cached) {
+		getResource().cached = cached;
 		return this;
 	}
 
-	public HeadResource addJavaScriptTemplate(final String path) {
-		addContributor(new IHeaderContributor() {
-			@Override
-			public void renderHead(IHeaderResponse response) {
-				response.renderJavascript(readInterpolatedString(path), null);
-			}
-		});
+	public HeadResource setIncludeOnce(boolean includeOnce) {
+		getResource().includeOnce = includeOnce;
 		return this;
 	}
 
-	public String getResourceURL(String path) {
-		ResourceReference reference = new ResourceReference(scope, path);
-		return RequestCycle.get().urlFor(reference).toString();
+	public HeadResource setInline(boolean inline) {
+		getResource().inline = inline;
+		return this;
 	}
 
-	/**
-	 * @see AbstractHeaderContributor#getHeaderContributors()
-	 */
-	@Override
-	public final IHeaderContributor[] getHeaderContributors() {
-		return createHeaderContributors();
+	public HeadResource setTemplateModel(Object templateModel) {
+		getResource().templateModel = templateModel;
+		return this;
 	}
 
-	public static HeadResource forCss(Class scope) {
-		return new HeadResource(scope).addCss();
+	private BaseResource getResource() {
+		final Resource resource = resources.get(resources.size() - 1);
+		if (resource instanceof BaseResource) {
+			return (BaseResource) resource;
+		}
+		throw new RuntimeException("Setters can only be applied after call to addCSS() or JavaScript()");
 	}
 
-	public static HeadResource forJavaScript(Class scope) {
-		return new HeadResource(scope).addJavaScript();
-	}
-
-	private String getDefaultJavaScriptPath() {
-		return scope.getSimpleName() + ".js";
-	}
-
-	private String getDefalutCssPath() {
-		return scope.getSimpleName() + ".css";
-	}
-
-	private String readInterpolatedString(String path) {
-		try {
-			PackageResource resource = PackageResource.get(scope, path);
-			InputStream inputStream = resource.getResourceStream().getInputStream();
-			String script = Streams.readString(inputStream);
-			return PropertyVariableInterpolator.interpolate(script, this);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+	private class RenderContext implements Context {
+		@Override
+		public Class<?> getScope() {
+			return scope;
 		}
 	}
 
-	private IHeaderContributor[] createHeaderContributors() {
-		if (headerContributors == null) {
-			headerContributors = new IHeaderContributor[tempList.size()];
-			tempList.toArray(headerContributors);
-			tempList = null;
-		}
-		return headerContributors;
+	private static interface Context extends IClusterable {
+		Class<?> getScope();
 	}
 
-	private void addContributor(IHeaderContributor contributor) {
-		if (tempList == null) {
-			throw new RuntimeException("Can't add contributors after render phase!");
+	private static interface Resource extends IClusterable {
+		public void renderHead(IHeaderResponse response, Context context);
+	}
+
+	private static class DependencyResource implements Resource {
+		private IHeaderContributor contributor;
+
+		private DependencyResource(IHeaderContributor contributor) {
+			this.contributor = contributor;
 		}
-		tempList.add(contributor);
+
+		@Override
+		public void renderHead(IHeaderResponse response, Context context) {
+			contributor.renderHead(response);
+		}
+	}
+
+	private static class CssResource extends BaseResource {
+		private String media;
+
+		private CssResource(String path, String media) {
+			super(path);
+			this.media = media;
+		}
+
+		@Override
+		protected void renderInline(String content, IHeaderResponse response, Context context) {
+			StringBuilder markup = new StringBuilder();
+			markup.append("<style type=\"text/css\"");
+			final String id = getId(context);
+			if (id != null) {
+				markup.append(" id=\"").append(id).append("\"");
+			}
+			if (media != null) {
+				markup.append(" media=\"").append(media).append("\"");
+			}
+			markup.append("</style>");
+			content = markup.toString();
+			if (cached) {
+				cache = content;
+			}
+			response.renderString(content);
+		}
+
+		@Override
+		protected void renderReference(IHeaderResponse response, Context context) {
+			response.renderCSSReference(new CompressedResourceReference(context.getScope(), path), media);
+		}
+	}
+
+	private static class JsResource extends BaseResource {
+		private JsResource(String path) {
+			super(path);
+		}
+
+		@Override
+		protected void renderInline(String content, IHeaderResponse response, Context context) {
+			content = JavascriptStripper.stripCommentsAndWhitespace(content);
+			if (cached) {
+				cache = content;
+			}
+			response.renderJavascript(content, getId(context));
+		}
+
+		@Override
+		protected void renderReference(IHeaderResponse response, Context context) {
+			response.renderJavascriptReference(new JavascriptResourceReference(context.getScope(), path));
+		}
+	}
+
+	private static abstract class BaseResource implements Resource {
+		protected Object templateModel;
+		protected String cache;
+		protected String path;
+		protected boolean cached;
+		protected boolean includeOnce = true;
+		protected boolean inline;
+
+		protected BaseResource(String path) {
+			this.path = path;
+		}
+
+		@Override
+		public void renderHead(IHeaderResponse response, Context context) {
+			if (!inline && templateModel == null) {
+				renderReference(response, context);
+				return;
+			}
+			if (cache != null) {
+				renderInline(cache, response, context);
+				return;
+			}
+			String content = readResource(context);
+			if (templateModel != null) {
+				content = interpolate(content);
+			}
+			renderInline(content, response, context);
+		}
+
+		protected String readResource(Context context) {
+			try {
+				PackageResource resource = PackageResource.get(context.getScope(), path);
+				InputStream inputStream = resource.getResourceStream().getInputStream();
+				return Streams.readString(inputStream, "utf-8");
+			} catch (ResourceStreamNotFoundException e) {
+				throw new RuntimeException(String.format("Can't find resource \"%s.%s\"", context.getScope().getName(), path), e);
+			} catch (IOException e) {
+				throw new RuntimeException(String.format("Can't read resource \"%s.%s\"", context.getScope().getName(), path), e);
+			}
+		}
+
+		protected String getId(Context context) {
+			if (includeOnce) {
+				final String scope = context.getScope().getName();
+				final int dotIndex = scope.lastIndexOf(".");
+				if (dotIndex < 0) {
+					return path;
+				}
+				return scope.substring(0, dotIndex).replaceAll("[.]", "-") + '-' + path;
+			}
+			return null;
+		}
+
+		protected String interpolate(String text) {
+			return PropertyVariableInterpolator.interpolate(text, templateModel);
+		}
+
+		protected abstract void renderInline(String content, IHeaderResponse response, Context context);
+
+		protected abstract void renderReference(IHeaderResponse response, Context context);
 	}
 }

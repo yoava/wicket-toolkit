@@ -5,10 +5,10 @@ import org.apache.wicket.Component;
 /**
  * @author Yoav Aharoni
  */
-public class BoundHeadResource extends HeadResource {
+public class ComponentAwareHeadResource extends HeadResource {
 	private Component component;
 
-	public BoundHeadResource(Class<?> scope) {
+	public ComponentAwareHeadResource(Class<?> scope) {
 		super(scope);
 	}
 
