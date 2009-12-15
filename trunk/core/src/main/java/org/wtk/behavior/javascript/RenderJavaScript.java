@@ -23,10 +23,6 @@ public class RenderJavaScript extends AbstractBehavior {
 		this.javascript = javascript;
 	}
 
-	public String getJavascript() {
-		return javascript.getObject().toString();
-	}
-
 	@Override
 	public void onRendered(Component component) {
 		super.onRendered(component);
@@ -37,5 +33,9 @@ public class RenderJavaScript extends AbstractBehavior {
 			final Response response = RequestCycle.get().getResponse();
 			JavascriptUtils.writeJavascript(response, getJavascript());
 		}
+	}
+
+	public String getJavascript() {
+		return javascript.getObject().toString();
 	}
 }

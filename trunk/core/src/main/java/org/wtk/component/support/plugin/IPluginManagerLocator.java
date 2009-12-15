@@ -6,7 +6,7 @@ import org.apache.wicket.Page;
  * @author Yoav Aharoni
  */
 public interface IPluginManagerLocator {
-    IPluginManager locate();
+	IPluginManager locate();
 
-    IPluginManager locate(Page page);
+	IPluginManager locate(Page page);
 }

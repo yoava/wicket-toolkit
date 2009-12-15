@@ -4,20 +4,20 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <display-name>wicket-toolkit</display-name>
+	<display-name>wicket-toolkit</display-name>
 
-    <filter>
-        <filter-name>wicket.wicket-toolkit</filter-name>
-        <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
-        <init-param>
-            <param-name>applicationClassName</param-name>
-            <param-value>org.wtk.DemoApplication</param-value>
-        </init-param>
-    </filter>
+	<filter>
+		<filter-name>wicket.wicket-toolkit</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+			<param-name>applicationClassName</param-name>
+			<param-value>org.wtk.DemoApplication</param-value>
+		</init-param>
+	</filter>
 
-    <filter-mapping>
-        <filter-name>wicket.wicket-toolkit</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+	<filter-mapping>
+		<filter-name>wicket.wicket-toolkit</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 </web-app>

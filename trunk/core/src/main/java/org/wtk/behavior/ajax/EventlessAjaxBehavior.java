@@ -10,11 +10,11 @@ public abstract class EventlessAjaxBehavior extends AjaxEventBehavior {
 		super("wicket:ajax");
 	}
 
-	public String getCallScript() {
-		return String.format("(%s)();", getCallFunction());
-	}
-
 	public String getCallFunction() {
 		return String.format("function() {%s}", getCallbackScript());
+	}
+
+	public String getCallScript() {
+		return String.format("(%s)();", getCallFunction());
 	}
 }

@@ -1,4 +1,4 @@
-package org.wtk.annotation;
+package org.wtk.model.annotation;
 
 /**
  * @author Yoav Aharoni

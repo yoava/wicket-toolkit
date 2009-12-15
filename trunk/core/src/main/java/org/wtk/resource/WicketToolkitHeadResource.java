@@ -7,6 +7,7 @@ import org.wtk.behavior.head.HeadResource;
  */
 public final class WicketToolkitHeadResource extends HeadResource {
 	public WicketToolkitHeadResource() {
+		super(WicketToolkitHeadResource.class);
 		addJavaScript();
 	}
 }

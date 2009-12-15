@@ -52,10 +52,6 @@ public class ItemsContainer<T extends Component> extends Panel {
 		}
 	}
 
-	public Iterator<T> getItemsIterator() {
-		return new ItemsIterator();
-	}
-
 	@SuppressWarnings({"unchecked"})
 	public void internalRemoveItem(T item) {
 		final Iterator<T> iterator = getItemsIterator();
@@ -79,17 +75,16 @@ public class ItemsContainer<T extends Component> extends Panel {
 		return false;
 	}
 
+	public Iterator<T> getItemsIterator() {
+		return new ItemsIterator();
+	}
+
 	private RepeatingView getItemsContainer() {
 		return (RepeatingView) get("items");
 	}
 
 	private class ItemsIterator implements Iterator<T> {
 		private Iterator containerIterator = getItemsContainer().iterator();
-
-		@Override
-		public boolean hasNext() {
-			return containerIterator.hasNext();
-		}
 
 		@SuppressWarnings({"unchecked"})
 		@Override
@@ -101,6 +96,11 @@ public class ItemsContainer<T extends Component> extends Panel {
 		@Override
 		public void remove() {
 			containerIterator.remove();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return containerIterator.hasNext();
 		}
 	}
 }

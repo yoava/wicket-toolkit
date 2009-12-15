@@ -18,8 +18,8 @@ public class CssStyle extends AttributeAppender {
 	}
 
 	private static class StyleModel extends AbstractReadOnlyModel {
-		private final String attribute;
 		private final IModel model;
+		private final String attribute;
 
 		private StyleModel(String attribute, IModel model) {
 			this.attribute = attribute;

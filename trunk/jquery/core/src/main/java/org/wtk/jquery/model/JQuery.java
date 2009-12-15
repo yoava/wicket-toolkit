@@ -2,7 +2,6 @@ package org.wtk.jquery.model;
 
 import org.apache.wicket.behavior.IBehavior;
 import org.wtk.behavior.css.CssClass;
-import org.wtk.jquery.resource.JQuerySkin;
 import org.wtk.model.HasValue;
 
 import java.util.Arrays;
@@ -11,14 +10,6 @@ import java.util.Arrays;
  * @author Yoav Aharoni
  */
 public class JQuery {
-	public static JQuerySkin getGlobalTheme(final Theme theme) {
-		return new JQuerySkin(theme, false);
-	}
-
-	public static JQuerySkin createScopedTheme(final Theme theme) {
-		return new JQuerySkin(theme, true);
-	}
-
 	/**
 	 * @author Yoav Aharoni
 	 */
@@ -97,17 +88,17 @@ public class JQuery {
 	}
 
 	public static class Position implements HasValue<String[]> {
-		public static final Position LEFT_TOP = new Position("left", "top");
-		public static final Position LEFT_CENTER = new Position("left", "center");
-		public static final Position LEFT_BOTTOM = new Position("left", "bottom");
-		public static final Position CENTER_TOP = new Position("center", "top");
-		public static final Position CENTER_CENTER = new Position("center", "center");
-		public static final Position CENTER_BOTTOM = new Position("center", "bottom");
-		public static final Position RIGHT_TOP = new Position("right", "top");
-		public static final Position RIGHT_CENTER = new Position("right", "center");
-		public static final Position RIGHT_BOTTOM = new Position("right", "bottom");
 
 		private final String[] position;
+		public static final Position CENTER_BOTTOM = new Position("center", "bottom");
+		public static final Position CENTER_CENTER = new Position("center", "center");
+		public static final Position CENTER_TOP = new Position("center", "top");
+		public static final Position LEFT_BOTTOM = new Position("left", "bottom");
+		public static final Position LEFT_CENTER = new Position("left", "center");
+		public static final Position LEFT_TOP = new Position("left", "top");
+		public static final Position RIGHT_BOTTOM = new Position("right", "bottom");
+		public static final Position RIGHT_CENTER = new Position("right", "center");
+		public static final Position RIGHT_TOP = new Position("right", "top");
 
 		public Position(int x, int y) {
 			this(String.valueOf(x), String.valueOf(y));
@@ -115,11 +106,6 @@ public class JQuery {
 
 		private Position(String x, String y) {
 			position = new String[]{x, y};
-		}
-
-		@Override
-		public String[] getValue() {
-			return position;
 		}
 
 		@Override
@@ -135,6 +121,11 @@ public class JQuery {
 		@Override
 		public int hashCode() {
 			return Arrays.hashCode(position);
+		}
+
+		@Override
+		public String[] getValue() {
+			return position;
 		}
 	}
 }

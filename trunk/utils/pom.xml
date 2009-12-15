@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.wicket.toolkit</groupId>
+	<groupId>org.jfrog</groupId>
 	<artifactId>wicket-toolkit-utils</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
@@ -10,14 +10,14 @@
 	<name>Wicket Toolkit: Utils</name>
 
 	<parent>
-		<groupId>org.wicket.toolkit</groupId>
+		<groupId>org.jfrog</groupId>
 		<artifactId>wicket-toolkit-parent</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.wicket.toolkit</groupId>
+			<groupId>org.jfrog</groupId>
 			<artifactId>wicket-toolkit-core</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
@@ -25,6 +25,11 @@
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
 		</dependency>
 
 		<dependency>

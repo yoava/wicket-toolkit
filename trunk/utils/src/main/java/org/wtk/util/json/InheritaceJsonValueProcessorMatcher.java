@@ -12,10 +12,6 @@ import java.util.Set;
 public class InheritaceJsonValueProcessorMatcher extends JsonValueProcessorMatcher {
 	private static final JsonValueProcessorMatcher INSTANCE = new InheritaceJsonValueProcessorMatcher();
 
-	public static JsonValueProcessorMatcher getInstance() {
-		return INSTANCE;
-	}
-
 	@SuppressWarnings({"unchecked"})
 	@Override
 	public Object getMatch(Class target, Set set) {
@@ -25,5 +21,9 @@ public class InheritaceJsonValueProcessorMatcher extends JsonValueProcessorMatch
 			}
 		}
 		return null;
+	}
+
+	public static JsonValueProcessorMatcher getInstance() {
+		return INSTANCE;
 	}
 }

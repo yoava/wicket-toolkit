@@ -58,17 +58,17 @@ public class JQueryOptionSerializer<T> {
 	}
 
 	private static class Option {
-		private String property;
 		private String optionName;
-
-		private Option(String property, String optionName) {
-			this.property = property;
-			this.optionName = optionName;
-		}
+		private String property;
 
 		private Option(String property) {
 			this.property = property;
 			this.optionName = property;
+		}
+
+		private Option(String property, String optionName) {
+			this.property = property;
+			this.optionName = optionName;
 		}
 	}
 

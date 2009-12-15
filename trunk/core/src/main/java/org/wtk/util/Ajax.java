@@ -21,8 +21,16 @@ public final class Ajax {
 		}
 	}
 
+	public static void prependJavascript(CharSequence script) {
+		AjaxRequestTarget.get().prependJavascript(script.toString());
+	}
+
 	public static void prependJavascript(String script, String... params) {
 		AjaxRequestTarget.get().prependJavascript(String.format(script, params));
+	}
+
+	public static void appendJavascript(CharSequence script) {
+		AjaxRequestTarget.get().appendJavascript(script.toString());
 	}
 
 	public static void appendJavascript(String script, String... params) {

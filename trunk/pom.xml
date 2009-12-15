@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.wicket.toolkit</groupId>
+	<groupId>org.jfrog</groupId>
 	<artifactId>wicket-toolkit-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
@@ -42,30 +42,31 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.wicket.toolkit</groupId>
+				<groupId>org.jfrog</groupId>
 				<artifactId>wicket-toolkit-core</artifactId>
 				<version>${version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.wicket.toolkit</groupId>
+				<groupId>org.jfrog</groupId>
 				<artifactId>wicket-toolkit-utils</artifactId>
 				<version>${version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.wicket.toolkit</groupId>
+				<groupId>org.jfrog</groupId>
 				<artifactId>wicket-toolkit-components</artifactId>
 				<version>${version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.wicket.toolkit</groupId>
+				<groupId>org.jfrog</groupId>
 				<artifactId>wicket-toolkit-jquery</artifactId>
 				<version>${version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.wicket.toolkit</groupId>
+				<groupId>org.jfrog</groupId>
 				<artifactId>wicket-toolkit-demo</artifactId>
 				<version>${version}</version>
 			</dependency>
+
 			<!--  wicket dependencies -->
 
 			<dependency>
@@ -86,6 +87,11 @@
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
 				<version>2.4</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.8.2</version>
 			</dependency>
 
 			<!--  junit dependency for testing -->

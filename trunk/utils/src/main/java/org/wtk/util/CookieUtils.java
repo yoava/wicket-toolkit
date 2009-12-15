@@ -18,11 +18,11 @@ public class CookieUtils {
 		if (value == null) {
 			clearCookie(name);
 		} else {
-			RequestUtils.getWebResponse().addCookie(new Cookie(name, value.toString()));
+			ResponseUtils.getWebResponse().addCookie(new Cookie(name, value.toString()));
 		}
 	}
 
 	public static void clearCookie(String name) {
-		RequestUtils.getWebResponse().clearCookie(new Cookie(name, null));
+		ResponseUtils.getWebResponse().clearCookie(new Cookie(name, null));
 	}
 }

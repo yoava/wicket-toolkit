@@ -7,7 +7,6 @@ import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.wtk.annotation.WicketProperty;
 import org.wtk.api.Titled;
 import org.wtk.behavior.head.MetaHttpEquiv;
 import org.wtk.behavior.head.PageTitle;
@@ -16,6 +15,7 @@ import org.wtk.component.panel.base.BasePanel;
 import org.wtk.component.support.border.BorderSupport;
 import org.wtk.component.support.border.IBorderSupport;
 import org.wtk.component.support.plugin.PluginManager;
+import org.wtk.model.annotation.WicketProperty;
 
 /**
  * @author Yoav Aharoni
@@ -31,64 +31,6 @@ public class BasePage extends WebPage implements Titled, IBorderSupport<BasePage
 		add(new PluginManager("pluginManager"));
 
 		addHeaderContributors();
-	}
-
-	private void addHeaderContributors() {
-		add(new MetaHttpEquiv("Content-Type", getContentType()));
-		add(new PageTitle(new PropertyModel(this, "title")));
-	}
-
-	protected MarkupContainer newBodyContainer(String id) {
-		return new TrasparentContainer(id);
-	}
-
-	@Override
-	protected void onRender(MarkupStream markupStream) {
-		final String xmlDeclaration = getXmlDeclaration();
-		Response response = getResponse();
-		if (StringUtils.isNotEmpty(xmlDeclaration)) {
-			response.write(xmlDeclaration);
-			response.write("\n");
-		}
-
-		final String docTypeDeclaration = getDocTypeDeclaration();
-		if (StringUtils.isNotEmpty(docTypeDeclaration)) {
-			response.write(docTypeDeclaration);
-			response.write("\n");
-		}
-
-		super.onRender(markupStream);
-	}
-
-	@Override
-	public String getTitle() {
-		return getString("page.title", new Model(this));
-	}
-
-	public String getXmlDeclaration() {
-		return getString("page.xmlDeclaration", new Model(this));
-	}
-
-	public String getContentType() {
-		return getString("page.contentType", new Model(this));
-	}
-
-	public String getDocTypeDeclaration() {
-		return getString("page.docTypeDeclaration", new Model(this));
-	}
-
-	@WicketProperty
-	public String getEncoding() {
-		return getApplication().getRequestCycleSettings().getResponseRequestEncoding();
-	}
-
-	public MarkupContainer getBodyContainer() {
-		return (MarkupContainer) get(BODY_ID);
-	}
-
-	@Override
-	public BasePanel getBorder() {
-		return getBorderSupport().getBorder();
 	}
 
 	@Override
@@ -115,8 +57,66 @@ public class BasePage extends WebPage implements Titled, IBorderSupport<BasePage
 		return this;
 	}
 
+	@Override
+	public BasePanel getBorder() {
+		return getBorderSupport().getBorder();
+	}
+
+	@Override
+	public String getTitle() {
+		return getString("page.title", new Model(this));
+	}
+
+	@WicketProperty
+	public String getEncoding() {
+		return getApplication().getRequestCycleSettings().getResponseRequestEncoding();
+	}
+
+	public MarkupContainer getBodyContainer() {
+		return (MarkupContainer) get(BODY_ID);
+	}
+
+	public String getContentType() {
+		return getString("page.contentType", new Model(this));
+	}
+
+	public String getDocTypeDeclaration() {
+		return getString("page.docTypeDeclaration", new Model(this));
+	}
+
+	public String getXmlDeclaration() {
+		return getString("page.xmlDeclaration", new Model(this));
+	}
+
+	@Override
+	protected void onRender(MarkupStream markupStream) {
+		final String xmlDeclaration = getXmlDeclaration();
+		Response response = getResponse();
+		if (StringUtils.isNotEmpty(xmlDeclaration)) {
+			response.write(xmlDeclaration);
+			response.write("\n");
+		}
+
+		final String docTypeDeclaration = getDocTypeDeclaration();
+		if (StringUtils.isNotEmpty(docTypeDeclaration)) {
+			response.write(docTypeDeclaration);
+			response.write("\n");
+		}
+
+		super.onRender(markupStream);
+	}
+
 	@SuppressWarnings({"unchecked"})
 	private IBorderSupport<IBorderSupport, BasePanel> getBorderSupport() {
 		return (IBorderSupport<IBorderSupport, BasePanel>) getBodyContainer().get(BORDER_ID);
+	}
+
+	private void addHeaderContributors() {
+		add(new MetaHttpEquiv("Content-Type", getContentType()));
+		add(new PageTitle(new PropertyModel(this, "title")));
+	}
+
+	protected MarkupContainer newBodyContainer(String id) {
+		return new TrasparentContainer(id);
 	}
 }

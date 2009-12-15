@@ -6,5 +6,5 @@ import java.io.Serializable;
  * @author Yoav Aharoni
  */
 public interface Titled extends Serializable {
-    String getTitle();
+	String getTitle();
 }

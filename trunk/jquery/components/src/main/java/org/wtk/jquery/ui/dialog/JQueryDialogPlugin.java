@@ -6,9 +6,10 @@ import org.wtk.behavior.head.HeadResource;
 import org.wtk.component.list.ItemsContainer;
 import org.wtk.component.support.plugin.Plugin;
 import org.wtk.jquery.resource.JQueryUIHeadResource;
-import org.wtk.util.JavaScriptUtils;
 
 import java.util.Iterator;
+
+import static org.wtk.util.ResponseUtils.renderJavaScript;
 
 /**
  * @author Yoav Aharoni
@@ -21,31 +22,6 @@ public class JQueryDialogPlugin extends Plugin {
 				.dependsOn(new JQueryUIHeadResource()));
 
 		add(new ItemsContainer<JQueryDialog>(CONTAINER_ID).add(new CssClass("wtk-jq-dialogs")));
-	}
-
-	@Override
-	protected void onAfterRender() {
-		super.onAfterRender();
-		final AjaxRequestTarget target = AjaxRequestTarget.get();
-		if (target != null) {
-			target.appendJavascript("jQuery.wtk.dialog.cleanup();");
-		}
-		JavaScriptUtils.render(getRenderScript());
-	}
-
-	private String getRenderScript() {
-		StringBuilder script = new StringBuilder();
-		final Iterator<JQueryDialog> dialogIterator = getDialogContainer().getItemsIterator();
-		while (dialogIterator.hasNext()) {
-			final JQueryDialog dialog = dialogIterator.next();
-			script.append(dialog.getShowScript());
-		}
-		return script.toString();
-	}
-
-	@SuppressWarnings({"unchecked"})
-	private ItemsContainer<JQueryDialog> getDialogContainer() {
-		return (ItemsContainer<JQueryDialog>) get(CONTAINER_ID);
 	}
 
 	public void show(JQueryDialog dialog) {
@@ -76,6 +52,31 @@ public class JQueryDialogPlugin extends Plugin {
 		}
 		dialog.onClose(target);
 		removeDialog(dialog);
+	}
+
+	@Override
+	protected void onAfterRender() {
+		super.onAfterRender();
+		final AjaxRequestTarget target = AjaxRequestTarget.get();
+		if (target != null) {
+			target.appendJavascript("jQuery.wtk.dialog.cleanup();");
+		}
+		renderJavaScript(getRenderScript());
+	}
+
+	@SuppressWarnings({"unchecked"})
+	private ItemsContainer<JQueryDialog> getDialogContainer() {
+		return (ItemsContainer<JQueryDialog>) get(CONTAINER_ID);
+	}
+
+	private String getRenderScript() {
+		StringBuilder script = new StringBuilder();
+		final Iterator<JQueryDialog> dialogIterator = getDialogContainer().getItemsIterator();
+		while (dialogIterator.hasNext()) {
+			final JQueryDialog dialog = dialogIterator.next();
+			script.append(dialog.getShowScript());
+		}
+		return script.toString();
 	}
 
 	protected void handleCloseButtonClick(JQueryDialog dialog, AjaxRequestTarget target) {

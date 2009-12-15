@@ -1,7 +1,6 @@
 package org.wtk.component.support.plugin;
 
 import org.apache.wicket.Page;
-import org.wtk.behavior.css.CssStyle;
 import org.wtk.component.list.ItemsContainer;
 
 import java.util.Iterator;
@@ -14,7 +13,6 @@ public class PluginManager extends ItemsContainer<Plugin> implements IPluginMana
 
 	public PluginManager(String id) {
 		super(id);
-		add(new CssStyle("display", "none"));
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -34,18 +32,6 @@ public class PluginManager extends ItemsContainer<Plugin> implements IPluginMana
 			}
 		}
 		return (T) createPlugin(pluginClass);
-	}
-
-	private Plugin createPlugin(Class<? extends Plugin> pluginClass) {
-		try {
-			Plugin plugin = pluginClass.newInstance();
-			addItem(plugin);
-			return plugin;
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	public static IPluginManager get() {
@@ -70,5 +56,17 @@ public class PluginManager extends ItemsContainer<Plugin> implements IPluginMana
 
 	public static void setLocator(IPluginManagerLocator locator) {
 		PluginManager.locator = locator;
+	}
+
+	private Plugin createPlugin(Class<? extends Plugin> pluginClass) {
+		try {
+			Plugin plugin = pluginClass.newInstance();
+			addItem(plugin);
+			return plugin;
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

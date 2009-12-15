@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.wtk.util.JavaScriptUtils;
+import org.wtk.util.JSBuilder;
 
 /**
  * @author Yoav Aharoni
@@ -34,6 +34,10 @@ public class AjaxConfirm {
 			this.dialog = dialog;
 		}
 
+		public String getConfirmScript() {
+			return getCallbackScript().toString();
+		}
+
 		@Override
 		protected void onEvent(AjaxRequestTarget target) {
 			String approvedString = RequestCycle.get().getRequest().getParameter("confirm");
@@ -42,14 +46,11 @@ public class AjaxConfirm {
 			getComponent().remove(this);
 		}
 
-		public String getConfirmScript() {
-			return getCallbackScript().toString();
-		}
-
 		@Override
 		protected CharSequence generateCallbackScript(CharSequence partialCall) {
-			return "var ok=" + JavaScriptUtils.jsFunctionCall("confirm", dialog.getMessage()) + ";" +
-					super.generateCallbackScript(partialCall + "+'&confirm=' + ok");
+			return new JSBuilder().append("var ok=")
+					.call("confirm", dialog.getMessage()).append(';')
+					.append(super.generateCallbackScript(partialCall + "+'&confirm=' + ok"));
 		}
 	}
 }

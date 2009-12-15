@@ -19,6 +19,10 @@ public class JQueryDialogFormWrapper extends JQueryDialog {
 		return format("jQuery('#%s').wtk('dialog','show',%s);", getMarkupId(), getDialog().getOptionsJson());
 	}
 
+	public JQueryDialog getDialog() {
+		return (JQueryDialog) get("item:item");
+	}
+
 	@Override
 	protected void onCloseButtonClicked(AjaxRequestTarget target) {
 		super.onCloseButtonClicked(target);
@@ -35,9 +39,5 @@ public class JQueryDialogFormWrapper extends JQueryDialog {
 	protected void onClose(AjaxRequestTarget target) {
 		super.onClose(target);
 		getDialog().onClose(target);
-	}
-
-	public JQueryDialog getDialog() {
-		return (JQueryDialog) get("item:item");
 	}
 }

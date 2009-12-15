@@ -75,37 +75,18 @@ public class BasePanel<T extends Serializable> extends Panel implements IBorderS
 		add(new BorderSupport(BORDER_ID));
 	}
 
-	@Override
-	protected void onComponentTag(ComponentTag tag) {
-		super.onComponentTag(tag);
-	}
-
 
 	public IModel resourceModel(String key) {
 		return resourceModel(key, null);
-	}
-
-	@Override
-	public boolean resolve(MarkupContainer container, MarkupStream markupStream, ComponentTag tag) {
-		return false;
 	}
 
 	public IModel resourceModel(String key, String defaultValue) {
 		return new PanelResourceModel(key, defaultValue);
 	}
 
-	@SuppressWarnings({"unchecked"})
-	public T getPanelModelObject() {
-		return (T) getModelObject();
-	}
-
-	public void setPanelModelObject(T object) {
-		setModelObject(object);
-	}
-
 	@Override
-	public BasePanel getBorder() {
-		return getBorderSupport().getBorder();
+	public boolean resolve(MarkupContainer container, MarkupStream markupStream, ComponentTag tag) {
+		return false;
 	}
 
 	@Override
@@ -134,6 +115,29 @@ public class BasePanel<T extends Serializable> extends Panel implements IBorderS
 
 	public IModel bindProperty(String expression) {
 		return new PanelPropertyModel(expression);
+	}
+
+	public String getSafeString(String key) {
+		return getString(key, new Model(this), "");
+	}
+
+	@Override
+	public BasePanel getBorder() {
+		return getBorderSupport().getBorder();
+	}
+
+	@SuppressWarnings({"unchecked"})
+	public T getPanelModelObject() {
+		return (T) getModelObject();
+	}
+
+	public void setPanelModelObject(T object) {
+		setModelObject(object);
+	}
+
+	@Override
+	protected void onComponentTag(ComponentTag tag) {
+		super.onComponentTag(tag);
 	}
 
 	@SuppressWarnings({"unchecked"})
@@ -167,9 +171,5 @@ public class BasePanel<T extends Serializable> extends Panel implements IBorderS
 			final Object value = getObject();
 			return value == null ? null : value.toString();
 		}
-	}
-
-	public String getSafeString(String key) {
-		return getString(key, new Model(this), "");
 	}
 }

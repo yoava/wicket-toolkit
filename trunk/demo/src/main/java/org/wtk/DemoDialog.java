@@ -4,6 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.form.Form;
+import org.wtk.behavior.head.HeadResource;
 import org.wtk.component.support.plugin.PluginManager;
 import org.wtk.jquery.model.JQuery;
 import org.wtk.jquery.ui.dialog.JQueryDialog;
@@ -14,6 +15,7 @@ import org.wtk.jquery.ui.dialog.JQueryDialogCloseLink;
  */
 public class DemoDialog extends JQueryDialog {
 	public DemoDialog() {
+		add(new HeadResource(DemoDialog.class).addJavaScript().setInline(true));
 		wrap(new Form(getId()));
 		setModal(true);
 		setTitle("Demo-" + getSession().nextSequenceValue());
