@@ -6,6 +6,7 @@ import org.wtk.behavior.head.HeadResource;
 import org.wtk.component.list.ComponentListView;
 import org.wtk.component.support.plugin.Plugin;
 import org.wtk.jquery.resource.JQueryUIHeadResource;
+import org.wtk.util.Ajax;
 
 import java.util.Iterator;
 
@@ -57,10 +58,7 @@ public class JQueryDialogPlugin extends Plugin {
 	@Override
 	protected void onAfterRender() {
 		super.onAfterRender();
-		final AjaxRequestTarget target = AjaxRequestTarget.get();
-		if (target != null) {
-			target.appendJavascript("jQuery.wtk.dialog.cleanup();");
-		}
+		Ajax.appendJavascript("jQuery.wtk.dialog.cleanup();");
 		renderJavaScript(getRenderScript());
 	}
 

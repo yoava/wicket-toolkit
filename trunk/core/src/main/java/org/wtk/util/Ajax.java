@@ -16,25 +16,39 @@ public final class Ajax {
 
 	public static void render(Component... components) {
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
-		for (Component component : components) {
-			target.addComponent(component);
+		if (target != null) {
+			for (Component component : components) {
+				target.addComponent(component);
+			}
 		}
 	}
 
 	public static void prependJavascript(CharSequence script) {
-		AjaxRequestTarget.get().prependJavascript(script.toString());
+		final AjaxRequestTarget target = AjaxRequestTarget.get();
+		if (target != null) {
+			target.prependJavascript(script.toString());
+		}
 	}
 
 	public static void prependJavascript(String script, String... params) {
-		AjaxRequestTarget.get().prependJavascript(String.format(script, params));
+		final AjaxRequestTarget target = AjaxRequestTarget.get();
+		if (target != null) {
+			target.prependJavascript(String.format(script, params));
+		}
 	}
 
 	public static void appendJavascript(CharSequence script) {
-		AjaxRequestTarget.get().appendJavascript(script.toString());
+		final AjaxRequestTarget target = AjaxRequestTarget.get();
+		if (target != null) {
+			target.appendJavascript(script.toString());
+		}
 	}
 
 	public static void appendJavascript(String script, String... params) {
-		AjaxRequestTarget.get().appendJavascript(String.format(script, params));
+		final AjaxRequestTarget target = AjaxRequestTarget.get();
+		if (target != null) {
+			target.appendJavascript(String.format(script, params));
+		}
 	}
 
 	public static AjaxRequestTarget getTarget() {
