@@ -116,8 +116,19 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 		return this;
 	}
 
+	public HeadResource clearCache() {
+		for (Resource resource : resources) {
+			resource.clearCache();
+		}
+		return this;
+	}
+
 	public HeadResource setCached(boolean cached) {
-		getResource().cacheLock = new ReentrantReadWriteLock();
+		if (cached) {
+			getResource().cacheLock = new ReentrantReadWriteLock();
+		} else {
+			getResource().cacheLock = null;
+		}
 		return this;
 	}
 
@@ -175,7 +186,9 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 	}
 
 	private static interface Resource extends IClusterable {
-		public void renderHead(IHeaderResponse response, Context context);
+		void renderHead(IHeaderResponse response, Context context);
+
+		void clearCache();
 	}
 
 	private static class DependencyResource implements Resource {
@@ -188,6 +201,10 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 		@Override
 		public void renderHead(IHeaderResponse response, Context context) {
 			contributor.renderHead(response);
+		}
+
+		@Override
+		public void clearCache() {
 		}
 	}
 
@@ -273,6 +290,14 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 
 			String content = getContent(context);
 			renderInline(content, response, context);
+		}
+
+		public void clearCache() {
+			if (cacheLock != null) {
+				cacheLock.writeLock().lock();
+				cache = null;
+				cacheLock.writeLock().unlock();
+			}
 		}
 
 		private String getContent(Context context) {
