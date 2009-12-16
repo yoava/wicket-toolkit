@@ -49,10 +49,6 @@ public class JavaScriptFeedbackPlugin extends Plugin {
 		return Collections.unmodifiableList(messages);
 	}
 
-	protected FeedbackMessagesModel newFeedbackMessagesModel() {
-		return new FeedbackMessagesModel(this);
-	}
-
 	private String getScript() {
 		StringBuffer initScript = new StringBuffer();
 
@@ -97,5 +93,9 @@ public class JavaScriptFeedbackPlugin extends Plugin {
 			current = current.getParent();
 		}
 		return "";
+	}
+
+	protected FeedbackMessagesModel newFeedbackMessagesModel() {
+		return new FeedbackMessagesModel(this);
 	}
 }

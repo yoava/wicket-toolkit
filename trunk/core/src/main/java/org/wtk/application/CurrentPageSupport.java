@@ -13,6 +13,13 @@ public class CurrentPageSupport implements IComponentInstantiationListener {
 	private static final MetaDataKey CURRENT_PAGE = new MetaDataKey(Page.class) {
 	};
 
+	@Override
+	public void onInstantiation(Component component) {
+		if (component instanceof Page) {
+			RequestCycle.get().setMetaData(CURRENT_PAGE, component);
+		}
+	}
+
 	public static Page getCurrentPage() {
 		final RequestCycle requestCycle = RequestCycle.get();
 		if (requestCycle == null) {
@@ -23,12 +30,5 @@ public class CurrentPageSupport implements IComponentInstantiationListener {
 			return current;
 		}
 		return requestCycle.getResponsePage();
-	}
-
-	@Override
-	public void onInstantiation(Component component) {
-		if (component instanceof Page) {
-			RequestCycle.get().setMetaData(CURRENT_PAGE, component);
-		}
 	}
 }

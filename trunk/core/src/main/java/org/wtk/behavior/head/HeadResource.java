@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Improved version of HeaderContributor: <ul>
@@ -33,14 +34,14 @@ import java.util.List;
  * @author Yoav Aharoni
  */
 public class HeadResource extends AbstractBehavior implements IHeaderContributor {
-	private static final MetaDataKey REPLACE_KEY = new MetaDataKey(HashMap.class) {
-	};
-
-	private static Logger log = LoggerFactory.getLogger(HeadResource.class);
 
 	private Class<?> replaceScope;
 	private Class<?> scope;
 	private List<Resource> resources = new ArrayList<Resource>();
+
+	private static Logger log = LoggerFactory.getLogger(HeadResource.class);
+	private static final MetaDataKey REPLACE_KEY = new MetaDataKey(HashMap.class) {
+	};
 
 	public HeadResource(Class<?> scope) {
 		this.scope = scope;
@@ -116,7 +117,7 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 	}
 
 	public HeadResource setCached(boolean cached) {
-		getResource().cached = cached;
+		getResource().cacheLock = new ReentrantReadWriteLock();
 		return this;
 	}
 
@@ -199,7 +200,7 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 		}
 
 		@Override
-		protected void renderInline(String content, IHeaderResponse response, Context context) {
+		protected String prepare(String content, Context context) {
 			StringBuilder markup = new StringBuilder();
 			markup.append("<style type=\"text/css\"");
 			final String id = getId(context);
@@ -209,11 +210,13 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 			if (media != null) {
 				markup.append(" media=\"").append(media).append("\"");
 			}
-			markup.append("</style>");
-			content = markup.toString();
-			if (cached) {
-				cache = content;
-			}
+			markup.append(">\n").append(content)
+					.append("\n</style>\n");
+			return markup.toString();
+		}
+
+		@Override
+		protected void renderInline(String content, IHeaderResponse response, Context context) {
 			response.renderString(content);
 		}
 
@@ -229,11 +232,12 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 		}
 
 		@Override
+		protected String prepare(String content, Context context) {
+			return JavascriptStripper.stripCommentsAndWhitespace(content);
+		}
+
+		@Override
 		protected void renderInline(String content, IHeaderResponse response, Context context) {
-			content = JavascriptStripper.stripCommentsAndWhitespace(content);
-			if (cached) {
-				cache = content;
-			}
 			response.renderJavascript(content, getId(context));
 		}
 
@@ -244,10 +248,11 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 	}
 
 	private static abstract class BaseResource implements Resource {
-		protected Object templateModel;
+		protected ReentrantReadWriteLock cacheLock;
 		protected String cache;
+
 		protected String path;
-		protected boolean cached;
+		protected Object templateModel;
 		protected boolean includeOnce = true;
 		protected boolean inline;
 
@@ -261,18 +266,25 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 				renderReference(response, context);
 				return;
 			}
-			if (cache != null) {
-				renderInline(cache, response, context);
+			if (cacheLock != null) {
+				renderFromCache(response, context);
 				return;
 			}
-			String content = readResource(context);
-			if (templateModel != null) {
-				content = interpolate(content);
-			}
+
+			String content = getContent(context);
 			renderInline(content, response, context);
 		}
 
-		protected String readResource(Context context) {
+		private String getContent(Context context) {
+			String content = readResource(context);
+			if (templateModel != null) {
+				content = PropertyVariableInterpolator.interpolate(content, templateModel);
+			}
+			content = prepare(content, context);
+			return content;
+		}
+
+		private String readResource(Context context) {
 			try {
 				PackageResource resource = PackageResource.get(context.getScope(), path);
 				InputStream inputStream = resource.getResourceStream().getInputStream();
@@ -284,6 +296,22 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 			}
 		}
 
+		private void renderFromCache(IHeaderResponse response, Context context) {
+			cacheLock.readLock().lock();
+			if (cache == null) {
+				cacheLock.readLock().unlock();
+				cacheLock.writeLock().lock();
+				if (cache == null) {
+					cache = getContent(context);
+				}
+				cacheLock.readLock().lock();
+				cacheLock.writeLock().unlock();
+			}
+
+			renderInline(cache, response, context);
+			cacheLock.readLock().unlock();
+		}
+
 		protected String getId(Context context) {
 			if (includeOnce) {
 				final String scope = context.getScope().getName();
@@ -291,14 +319,12 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 				if (dotIndex < 0) {
 					return path;
 				}
-				return scope.substring(0, dotIndex).replaceAll("[.]", "-") + '-' + path;
+				return scope.substring(0, dotIndex + 1) + path;
 			}
 			return null;
 		}
 
-		protected String interpolate(String text) {
-			return PropertyVariableInterpolator.interpolate(text, templateModel);
-		}
+		protected abstract String prepare(String content, Context context);
 
 		protected abstract void renderInline(String content, IHeaderResponse response, Context context);
 

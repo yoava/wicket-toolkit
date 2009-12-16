@@ -73,10 +73,10 @@ public class JQuery {
 		UI_DARKNESS("ui-darkness", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
 		UI_LIGHTNESS("ui-lightness", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
 		VADER("vader", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get());
-
-		private String theme;
 		private HeadResource globalResource;
 		private HeadResource scopedResource;
+
+		private String theme;
 
 		Theme(String theme, HeadResource globalResource, HeadResource scopedResource) {
 			this.theme = theme;
@@ -88,17 +88,17 @@ public class JQuery {
 			return new CssClass("." + theme);
 		}
 
+		@Override
+		public String getValue() {
+			return theme;
+		}
+
 		public HeadResource getGlobalResource() {
 			return globalResource;
 		}
 
 		public HeadResource getScopedResource() {
 			return scopedResource;
-		}
-
-		@Override
-		public String getValue() {
-			return theme;
 		}
 	}
 

@@ -10,7 +10,7 @@ public class JQueryCommonCss extends HeadResource {
 
 	private JQueryCommonCss() {
 		super(JQueryCommonCss.class);
-		addCss("common.css").setInline(true);
+		addCss("common.css").setInline(true).setCached(true);
 	}
 
 	public static HeadResource get() {

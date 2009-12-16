@@ -3,6 +3,8 @@ package org.wtk.behavior.head;
 import org.apache.wicket.Component;
 
 /**
+ * <b>NOTE:</b> Must not be static.
+ *
  * @author Yoav Aharoni
  */
 public class ComponentAwareHeadResource extends HeadResource {
