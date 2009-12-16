@@ -10,9 +10,9 @@
 	};
 
 	$.fn.wtk = function(util, method) {
-		var args;
 		var f = $.wtk[util];
 		var m = f[method];
+		var args;
 		if (typeof m == 'function') {
 			args = Array.prototype.slice.call(arguments, 2);
 			m.apply(this, args);

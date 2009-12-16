@@ -7,6 +7,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.util.string.JavascriptUtils;
+import org.wtk.application.CurrentPageSupport;
 
 /**
  * @author Yoav Aharoni
@@ -23,11 +24,7 @@ public class ResponseUtils {
 	}
 
 	public static Page getResponsePage() {
-		final RequestCycle requestCycle = RequestCycle.get();
-		if (requestCycle == null) {
-			return null;
-		}
-		return requestCycle.getResponsePage();
+		return CurrentPageSupport.getCurrentPage();
 	}
 
 	public static WebResponse getWebResponse() {

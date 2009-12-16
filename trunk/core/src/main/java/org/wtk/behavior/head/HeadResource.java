@@ -1,6 +1,8 @@
 package org.wtk.behavior.head;
 
 import org.apache.wicket.IClusterable;
+import org.apache.wicket.MetaDataKey;
+import org.apache.wicket.Page;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
@@ -11,10 +13,14 @@ import org.apache.wicket.util.io.Streams;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.string.JavascriptStripper;
 import org.apache.wicket.util.string.interpolator.PropertyVariableInterpolator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wtk.application.CurrentPageSupport;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,6 +32,11 @@ import java.util.List;
  * @author Yoav Aharoni
  */
 public class HeadResource extends AbstractBehavior implements IHeaderContributor {
+
+	private static final MetaDataKey REPLACE_KEY = new MetaDataKey(HashMap.class) {
+	};
+	private static Logger log = LoggerFactory.getLogger(HeadResource.class);
+
 	private Class<?> scope;
 	private List<Resource> resources = new ArrayList<Resource>();
 
@@ -38,10 +49,43 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 	 */
 	@Override
 	public void renderHead(IHeaderResponse response) {
+		// check for replacement
+		final Page page = CurrentPageSupport.getCurrentPage();
+		if (page != null) {
+			final HashMap<Class, HeadResource> map = getReplaceMap(page);
+			if (map != null) {
+				final HeadResource replaceWith = map.get(scope);
+				if (replaceWith != null) {
+					replaceWith.renderHead(response);
+					return;
+				}
+			}
+		}
+
+		// render resources
 		final Context context = new RenderContext();
 		for (Resource resource : resources) {
 			resource.renderHead(response, context);
 		}
+	}
+
+	public HeadResource replaces(Class<?> replaceScope) {
+		final Page page = CurrentPageSupport.getCurrentPage();
+		if (page == null) {
+			log.warn(String.format("%s resource cannot replace %s resource since current page isn't found", scope.getName(), replaceScope.getSimpleName()));
+			return this;
+		}
+		HashMap<Class, HeadResource> map = getReplaceMap(page);
+		if (map == null) {
+			map = new HashMap<Class, HeadResource>();
+			page.setMetaData(REPLACE_KEY, map);
+		}
+		map.put(replaceScope, this);
+		return this;
+	}
+
+	public HeadResource replaces(HeadResource headResource) {
+		return replaces(headResource.scope);
 	}
 
 	public HeadResource dependsOn(IHeaderContributor headerContributor) {
@@ -92,6 +136,11 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 	public HeadResource setTemplateModel(Object templateModel) {
 		getResource().templateModel = templateModel;
 		return this;
+	}
+
+	@SuppressWarnings({"unchecked"})
+	private static HashMap<Class, HeadResource> getReplaceMap(Page page) {
+		return (HashMap<Class, HeadResource>) page.getMetaData(REPLACE_KEY);
 	}
 
 	private BaseResource getResource() {

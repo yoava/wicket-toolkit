@@ -1,6 +1,7 @@
 package org.wtk;
 
 import org.apache.wicket.protocol.http.WebApplication;
+import org.wtk.application.CurrentPageSupport;
 
 public class DemoApplication extends WebApplication {
 
@@ -18,5 +19,6 @@ public class DemoApplication extends WebApplication {
 	@Override
 	protected void init() {
 		super.init();
+		addComponentInstantiationListener(new CurrentPageSupport());
 	}
 }

@@ -1,6 +1,7 @@
 package org.wtk.jquery.resource;
 
 import org.wtk.behavior.head.HeadResource;
+import org.wtk.resource.WicketToolkitHeadResource;
 
 
 /**
@@ -11,5 +12,6 @@ public class JQueryHeadResource extends HeadResource {
 		super(JQueryHeadResource.class);
 		addJavaScript("js/jquery-1.3.2.min.js");
 		addJavaScript();
+		replaces(new WicketToolkitHeadResource());
 	}
 }

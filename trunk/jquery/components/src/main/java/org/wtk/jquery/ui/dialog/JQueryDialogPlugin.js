@@ -5,9 +5,11 @@
 				$(this).wtk('dialog', 'destroy');
 			}).dialog('close');
 		},
+
 		destroy: function() {
 			this.dialog('destroy').remove();
 		},
+
 		show: function(options) {
 			this.dialog(options);
 		},
