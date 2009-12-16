@@ -16,11 +16,14 @@ import static org.wtk.util.ResponseUtils.renderJavaScript;
  * @author Yoav Aharoni
  */
 public class JQueryDialogPlugin extends Plugin {
+	private static final HeadResource HEAD_RESOURCE = new HeadResource(JQueryDialogPlugin.class)
+			.addJavaScript()
+			.dependsOn(JQueryUIHeadResource.get());
+
 	private static final String CONTAINER_ID = "dialogs";
 
 	public JQueryDialogPlugin() {
-		add(new HeadResource(JQueryDialogPlugin.class).addJavaScript()
-				.dependsOn(new JQueryUIHeadResource()));
+		add(HEAD_RESOURCE);
 
 		add(new ComponentListView<JQueryDialog>(CONTAINER_ID).add(new CssClass("wtk-jq-dialogs")));
 	}

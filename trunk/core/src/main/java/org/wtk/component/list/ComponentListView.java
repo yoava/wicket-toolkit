@@ -22,7 +22,7 @@ public class ComponentListView<T extends Component> extends Panel {
 	public ComponentListView(String id) {
 		super(id);
 		setOutputMarkupId(true);
-		add(new WicketToolkitHeadResource());
+		add(WicketToolkitHeadResource.get());
 		add(new RepeatingView("items"));
 	}
 

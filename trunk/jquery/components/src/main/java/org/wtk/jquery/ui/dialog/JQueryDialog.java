@@ -11,7 +11,6 @@ import org.wtk.component.panel.base.BasePanel;
 import org.wtk.component.support.plugin.PluginManager;
 import org.wtk.jquery.model.JQuery;
 import org.wtk.jquery.model.JQueryOption;
-import org.wtk.jquery.resource.JQuerySkin;
 import org.wtk.jquery.ui.util.JQueryOptionSerializer;
 
 import java.io.Serializable;
@@ -276,11 +275,6 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	public JQueryDialog<T> setTitle(String title) {
 		this.title = title;
 		return this;
-	}
-
-	public JQueryDialog<T> setTheme(JQuery.Theme theme) {
-		add(new JQuerySkin(theme));
-		return setCssClass(theme.getValue());
 	}
 
 	JQueryDialog getWrappingDialog() {

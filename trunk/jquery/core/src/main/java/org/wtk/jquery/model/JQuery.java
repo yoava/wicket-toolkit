@@ -2,6 +2,9 @@ package org.wtk.jquery.model;
 
 import org.apache.wicket.behavior.IBehavior;
 import org.wtk.behavior.css.CssClass;
+import org.wtk.behavior.head.HeadResource;
+import org.wtk.jquery.resource.css.JQueryUILightnessScopedTheme;
+import org.wtk.jquery.resource.css.JQueryUILightnessTheme;
 import org.wtk.model.HasValue;
 
 import java.util.Arrays;
@@ -45,40 +48,52 @@ public class JQuery {
 	 * @author Yoav Aharoni
 	 */
 	public enum Theme implements HasValue<String> {
-		BLACK_TIE("black-tie"),
-		BLITZER("blitzer"),
-		CUPERTINO("cupertino"),
-		DARK_HIVE("dark-hive"),
-		DOT_LUV("dot-luv"),
-		EGGPLANT("eggplant"),
-		EXCITE_BIKE("excite-bike"),
-		FLICK("flick"),
-		HOT_SNEAKS("hot-sneaks"),
-		HUMANITY("humanity"),
-		LE_FROG("le-frog"),
-		MINT_CHOC("mint-choc"),
-		NO_THEME("no-theme"),
-		OVERCAST("overcast"),
-		PEPPER_GRINDER("pepper-grinder"),
-		REDMOND("redmond"),
-		SMOOTHNESS("smoothness"),
-		SOUTH_STREET("south-street"),
-		START("start"),
-		SUNNY("sunny"),
-		SWANKY_PURSE("swanky-purse"),
-		TRONTASTIC("trontastic"),
-		UI_DARKNESS("ui-darkness"),
-		UI_LIGHTNESS("ui-lightness"),
-		VADER("vader");
+		BLACK_TIE("black-tie", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		BLITZER("blitzer", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		CUPERTINO("cupertino", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		DARK_HIVE("dark-hive", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		DOT_LUV("dot-luv", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		EGGPLANT("eggplant", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		EXCITE_BIKE("excite-bike", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		FLICK("flick", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		HOT_SNEAKS("hot-sneaks", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		HUMANITY("humanity", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		LE_FROG("le-frog", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		MINT_CHOC("mint-choc", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		NO_THEME("no-theme", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		OVERCAST("overcast", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		PEPPER_GRINDER("pepper-grinder", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		REDMOND("redmond", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		SMOOTHNESS("smoothness", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		SOUTH_STREET("south-street", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		START("start", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		SUNNY("sunny", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		SWANKY_PURSE("swanky-purse", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		TRONTASTIC("trontastic", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		UI_DARKNESS("ui-darkness", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		UI_LIGHTNESS("ui-lightness", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
+		VADER("vader", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get());
 
 		private String theme;
+		private HeadResource globalResource;
+		private HeadResource scopedResource;
 
-		Theme(String theme) {
+		Theme(String theme, HeadResource globalResource, HeadResource scopedResource) {
 			this.theme = theme;
+			this.globalResource = globalResource;
+			this.scopedResource = scopedResource;
 		}
 
 		public IBehavior createCssScopeBehavior() {
 			return new CssClass("." + theme);
+		}
+
+		public HeadResource getGlobalResource() {
+			return globalResource;
+		}
+
+		public HeadResource getScopedResource() {
+			return scopedResource;
 		}
 
 		@Override

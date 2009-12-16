@@ -1,5 +1,6 @@
 package org.wtk.behavior.head;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.IClusterable;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.Page;
@@ -32,11 +33,12 @@ import java.util.List;
  * @author Yoav Aharoni
  */
 public class HeadResource extends AbstractBehavior implements IHeaderContributor {
-
 	private static final MetaDataKey REPLACE_KEY = new MetaDataKey(HashMap.class) {
 	};
+
 	private static Logger log = LoggerFactory.getLogger(HeadResource.class);
 
+	private Class<?> replaceScope;
 	private Class<?> scope;
 	private List<Resource> resources = new ArrayList<Resource>();
 
@@ -69,18 +71,13 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 		}
 	}
 
+	@Override
+	public void bind(Component component) {
+		registerReplacement();
+	}
+
 	public HeadResource replaces(Class<?> replaceScope) {
-		final Page page = CurrentPageSupport.getCurrentPage();
-		if (page == null) {
-			log.warn(String.format("%s resource cannot replace %s resource since current page isn't found", scope.getName(), replaceScope.getSimpleName()));
-			return this;
-		}
-		HashMap<Class, HeadResource> map = getReplaceMap(page);
-		if (map == null) {
-			map = new HashMap<Class, HeadResource>();
-			page.setMetaData(REPLACE_KEY, map);
-		}
-		map.put(replaceScope, this);
+		this.replaceScope = replaceScope;
 		return this;
 	}
 
@@ -141,6 +138,20 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 	@SuppressWarnings({"unchecked"})
 	private static HashMap<Class, HeadResource> getReplaceMap(Page page) {
 		return (HashMap<Class, HeadResource>) page.getMetaData(REPLACE_KEY);
+	}
+
+	private void registerReplacement() {
+		final Page page = CurrentPageSupport.getCurrentPage();
+		if (page == null) {
+			log.warn(String.format("%s resource cannot replace %s resource since current page isn't found", scope.getName(), replaceScope.getName()));
+			return;
+		}
+		HashMap<Class, HeadResource> map = getReplaceMap(page);
+		if (map == null) {
+			map = new HashMap<Class, HeadResource>();
+			page.setMetaData(REPLACE_KEY, map);
+		}
+		map.put(replaceScope, this);
 	}
 
 	private BaseResource getResource() {
