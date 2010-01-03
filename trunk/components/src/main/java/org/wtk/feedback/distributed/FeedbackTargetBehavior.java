@@ -1,4 +1,4 @@
-package org.wtk.feedback.behavior;
+package org.wtk.feedback.distributed;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.SimpleAttributeModifier;

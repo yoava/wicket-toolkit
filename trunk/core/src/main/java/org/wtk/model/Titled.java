@@ -1,4 +1,4 @@
-package org.wtk.api;
+package org.wtk.model;
 
 import java.io.Serializable;
 
