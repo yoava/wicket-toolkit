@@ -14,9 +14,9 @@ public class JQueryHeadResource extends HeadResource {
 
 	private JQueryHeadResource() {
 		super(JQueryHeadResource.class);
+		dependsOn(WicketToolkitHeadResource.get());
 		dependsOn(JQueryCommonCss.get());
 		dependsOn(JQueryDefaultTheme.get());
-		replaces(WicketToolkitHeadResource.get());
 
 		addJavaScript("js/jquery-1.3.2.min.js");
 		addJavaScript();

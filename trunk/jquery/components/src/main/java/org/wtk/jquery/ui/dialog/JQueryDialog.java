@@ -28,7 +28,8 @@ import static org.wtk.jquery.model.JQuery.Position;
  * @author Yoav Aharoni
  */
 public class JQueryDialog<T extends Serializable> extends BasePanel<T> implements Titled {
-	private static JQueryOptionSerializer<JQueryDialog> optionSerializer = new JQueryOptionSerializer<JQueryDialog>(JQueryDialog.class);
+	private static final JQueryOptionSerializer<JQueryDialog> optionSerializer = new JQueryOptionSerializer<JQueryDialog>(JQueryDialog.class);
+
 	private EventlessAjaxBehavior closeEvent;
 	private Integer height;
 	private Integer maxHeight;

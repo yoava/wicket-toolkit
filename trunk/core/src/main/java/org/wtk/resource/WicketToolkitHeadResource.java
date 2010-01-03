@@ -1,5 +1,8 @@
 package org.wtk.resource;
 
+import org.apache.wicket.ajax.WicketAjaxReference;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.WicketEventReference;
 import org.wtk.behavior.head.HeadResource;
 
 /**
@@ -10,6 +13,8 @@ public final class WicketToolkitHeadResource extends HeadResource {
 
 	private WicketToolkitHeadResource() {
 		super(WicketToolkitHeadResource.class);
+		dependsOn(HeaderContributor.forJavaScript(WicketAjaxReference.INSTANCE));
+		dependsOn(HeaderContributor.forJavaScript(WicketEventReference.INSTANCE));
 		addJavaScript();
 	}
 

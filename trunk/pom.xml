@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.jfrog</groupId>
+	<groupId>org.wtk</groupId>
 	<artifactId>wicket-toolkit-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
@@ -39,30 +39,38 @@
 		<module>demo</module>
 	</modules>
 
+	<distributionManagement>
+		<repository>
+			<id>third-party-local</id>
+			<name>third-party-local</name>
+			<url>http://devtools:8080/artifactory/third-party-local</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.jfrog</groupId>
+				<groupId>org.wtk</groupId>
 				<artifactId>wicket-toolkit-core</artifactId>
 				<version>${version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.jfrog</groupId>
+				<groupId>org.wtk</groupId>
 				<artifactId>wicket-toolkit-utils</artifactId>
 				<version>${version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.jfrog</groupId>
+				<groupId>org.wtk</groupId>
 				<artifactId>wicket-toolkit-components</artifactId>
 				<version>${version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.jfrog</groupId>
+				<groupId>org.wtk</groupId>
 				<artifactId>wicket-toolkit-jquery</artifactId>
 				<version>${version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.jfrog</groupId>
+				<groupId>org.wtk</groupId>
 				<artifactId>wicket-toolkit-demo</artifactId>
 				<version>${version}</version>
 			</dependency>

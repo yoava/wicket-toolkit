@@ -5,6 +5,7 @@ import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.application.IComponentInstantiationListener;
+import org.wtk.behavior.BaseBehavior;
 
 /**
  * @author Yoav Aharoni
@@ -16,7 +17,8 @@ public class CurrentPageSupport implements IComponentInstantiationListener {
 	@Override
 	public void onInstantiation(Component component) {
 		if (component instanceof Page) {
-			RequestCycle.get().setMetaData(CURRENT_PAGE, component);
+			component.add(new UpdateCurrentPageBehavior());
+			setCurrentPage((Page) component);
 		}
 	}
 
@@ -30,5 +32,25 @@ public class CurrentPageSupport implements IComponentInstantiationListener {
 			return current;
 		}
 		return requestCycle.getResponsePage();
+	}
+
+	public static void setCurrentPage(Page page) {
+		final RequestCycle requestCycle = RequestCycle.get();
+		if (requestCycle != null) {
+			requestCycle.setMetaData(CURRENT_PAGE, page);
+		}
+	}
+
+	private static class UpdateCurrentPageBehavior extends BaseBehavior {
+		@Override
+		public void beforeRender(Component component) {
+			final Page page = (Page) component;
+			setCurrentPage(page);
+		}
+
+		@Override
+		public void afterRender(Component component) {
+			setCurrentPage(null);
+		}
 	}
 }

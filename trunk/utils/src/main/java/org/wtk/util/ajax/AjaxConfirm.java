@@ -30,7 +30,7 @@ public class AjaxConfirm {
 		private final ConfirmDialog dialog;
 
 		private ConfirmAjaxBehavior(ConfirmDialog dialog) {
-			super("wicket:confirm");
+			super("wtk:confirm");
 			this.dialog = dialog;
 		}
 

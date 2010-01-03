@@ -1,5 +1,5 @@
 (function($) {
-	window.wtk = $;
+	window.wtk.q = $;
 
 	if (window.loaded) {
 		$.isReady = true;

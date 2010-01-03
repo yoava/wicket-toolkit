@@ -7,7 +7,7 @@ import org.apache.wicket.ajax.AjaxEventBehavior;
  */
 public abstract class EventlessAjaxBehavior extends AjaxEventBehavior {
 	public EventlessAjaxBehavior() {
-		super("wicket:ajax");
+		super("wtk:ajax");
 	}
 
 	public String getCallFunction() {

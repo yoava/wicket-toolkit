@@ -69,4 +69,5 @@ public class PluginManager extends ComponentListView<Plugin> implements IPluginM
 			throw new RuntimeException(e);
 		}
 	}
+
 }

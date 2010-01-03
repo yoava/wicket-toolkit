@@ -2,7 +2,7 @@ package org.wtk.component.support.plugin;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
-import org.wtk.util.ResponseUtils;
+import org.wtk.application.CurrentPageSupport;
 
 /**
  * @author Yoav Aharoni
@@ -10,11 +10,11 @@ import org.wtk.util.ResponseUtils;
 public class HierarchyPluginManagerLocator implements IPluginManagerLocator {
 	@Override
 	public IPluginManager locate() {
-		final Page responsePage = ResponseUtils.getResponsePage();
-		if (responsePage == null) {
+		final Page currentPage = CurrentPageSupport.getCurrentPage();
+		if (currentPage == null) {
 			throw new RuntimeException("ResponsePage is null, you may locate PluginManager using PluginManager.get(page).");
 		}
-		return locate(responsePage);
+		return locate(currentPage);
 	}
 
 	@Override

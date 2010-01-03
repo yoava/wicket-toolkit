@@ -29,7 +29,7 @@ public class ComponentListView<T extends Component> extends Panel {
 	public void addItem(T item) {
 		internalAddItem(item);
 		if (shouldRefresh()) {
-			Ajax.prependJavascript("wtk('#%s').append('<span id=\"%s\"></span>');", getMarkupId(), item.getMarkupId());
+			Ajax.prependJavascript("wtk.q('#%s').append('<span id=\"%s\"></span>');", getMarkupId(), item.getMarkupId());
 			Ajax.render(item);
 		}
 	}
@@ -48,7 +48,7 @@ public class ComponentListView<T extends Component> extends Panel {
 	public void removeItem(T item) {
 		internalRemoveItem(item);
 		if (shouldRefresh()) {
-			Ajax.appendJavascript("wtk('#%s').remove();", item.getMarkupId());
+			Ajax.appendJavascript("wtk.q('#%s').remove();", item.getMarkupId());
 		}
 	}
 

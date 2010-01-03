@@ -34,14 +34,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author Yoav Aharoni
  */
 public class HeadResource extends AbstractBehavior implements IHeaderContributor {
+	private static final MetaDataKey REPLACE_KEY = new MetaDataKey(HashMap.class) {
+	};
+
+	private static final Logger log = LoggerFactory.getLogger(HeadResource.class);
 
 	private Class<?> replaceScope;
 	private Class<?> scope;
 	private List<Resource> resources = new ArrayList<Resource>();
-
-	private static Logger log = LoggerFactory.getLogger(HeadResource.class);
-	private static final MetaDataKey REPLACE_KEY = new MetaDataKey(HashMap.class) {
-	};
 
 	public HeadResource(Class<?> scope) {
 		this.scope = scope;
@@ -53,16 +53,8 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		// check for replacement
-		final Page page = CurrentPageSupport.getCurrentPage();
-		if (page != null) {
-			final HashMap<Class, HeadResource> map = getReplaceMap(page);
-			if (map != null) {
-				final HeadResource replaceWith = map.get(scope);
-				if (replaceWith != null) {
-					replaceWith.renderHead(response);
-					return;
-				}
-			}
+		if (renderReplacement(response)) {
+			return;
 		}
 
 		// render resources
@@ -152,10 +144,36 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 		return (HashMap<Class, HeadResource>) page.getMetaData(REPLACE_KEY);
 	}
 
+	/**
+	 * Checks if this resource is replaced by another resource.
+	 * If so, renders replacing resource.
+	 *
+	 * @param response HeaderResponse
+	 * @return true if this resource is replaced by another.
+	 */
+	private boolean renderReplacement(IHeaderResponse response) {
+		final Page page = CurrentPageSupport.getCurrentPage();
+		if (page != null) {
+			final HashMap<Class, HeadResource> map = getReplaceMap(page);
+			if (map != null) {
+				final HeadResource replaceWith = map.get(scope);
+				if (replaceWith != null) {
+					replaceWith.renderHead(response);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private void registerReplacement() {
+		if (replaceScope == null) {
+			return;
+		}
+
 		final Page page = CurrentPageSupport.getCurrentPage();
 		if (page == null) {
-			log.warn(String.format("%s resource cannot replace %s resource since current page isn't found", scope.getName(), replaceScope.getName()));
+			log.warn(String.format("%s resource cannot replace %s resource since current containing page cannot be detected", scope.getName(), replaceScope.getName()));
 			return;
 		}
 		HashMap<Class, HeadResource> map = getReplaceMap(page);

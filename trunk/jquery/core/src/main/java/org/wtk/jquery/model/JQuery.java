@@ -103,8 +103,6 @@ public class JQuery {
 	}
 
 	public static class Position implements HasValue<String[]> {
-
-		private final String[] position;
 		public static final Position CENTER_BOTTOM = new Position("center", "bottom");
 		public static final Position CENTER_CENTER = new Position("center", "center");
 		public static final Position CENTER_TOP = new Position("center", "top");
@@ -114,6 +112,8 @@ public class JQuery {
 		public static final Position RIGHT_BOTTOM = new Position("right", "bottom");
 		public static final Position RIGHT_CENTER = new Position("right", "center");
 		public static final Position RIGHT_TOP = new Position("right", "top");
+
+		private final String[] position;
 
 		public Position(int x, int y) {
 			this(String.valueOf(x), String.valueOf(y));

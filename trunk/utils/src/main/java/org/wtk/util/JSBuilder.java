@@ -19,16 +19,21 @@ public class JSBuilder implements CharSequence, Appendable, Serializable {
 		return this;
 	}
 
-	public JSBuilder function(String name, String... parameters) {
+	public JSBuilder function(String... parameters) {
 		script.append("function(");
-		for (int i = 0, parametersLength = parameters.length; i < parametersLength; i++) {
-			if (i > 0) {
-				script.append(',');
-			}
-			script.append(parameters[i]);
-		}
+		list(parameters);
 		script.append(") {");
 		return this;
+	}
+
+	public JSBuilder startScope(String... paramNames) {
+		return append('(').function(paramNames).append('\n');
+	}
+
+	public JSBuilder endScope(String... paramValues) {
+		append("})(");
+		list(paramValues);
+		return append(");");
 	}
 
 	public JSBuilder end() {
@@ -107,5 +112,14 @@ public class JSBuilder implements CharSequence, Appendable, Serializable {
 	@Override
 	public CharSequence subSequence(int start, int end) {
 		return script.subSequence(start, end);
+	}
+
+	private void list(String[] parameters) {
+		for (int i = 0, parametersLength = parameters.length; i < parametersLength; i++) {
+			if (i > 0) {
+				script.append(',');
+			}
+			script.append(parameters[i]);
+		}
 	}
 }

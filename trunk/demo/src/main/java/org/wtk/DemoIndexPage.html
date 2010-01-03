@@ -3,9 +3,20 @@
 		form {
 			margin: 0;
 		}
+
+		.feedback-marker-ERROR {
+			border: solid 2px red;
+			display: inline-block;
+		}
 	</style>
 </wicket:head>
 <wicket:extend>
+	<div wicket:id="feedback"></div>
+
 	<!--<div wicket:id="panel"></div>-->
 	<a wicket:id="test">TEST</a>
+
+	<div style="margin: 20px;">
+		<input wicket:id="text" type="text"/>
+	</div>
 </wicket:extend>

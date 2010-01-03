@@ -76,6 +76,10 @@ public class BasePage extends WebPage implements Titled, IBorderSupport<BasePage
 		return (MarkupContainer) get(BODY_ID);
 	}
 
+	public PluginManager getPluginManager() {
+		return (PluginManager) get("pluginManager");
+	}
+
 	public String getContentType() {
 		return getString("page.contentType", new Model(this));
 	}
