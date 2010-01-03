@@ -6,8 +6,8 @@ import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.resolver.IComponentResolver;
 import org.apache.wicket.model.*;
-import org.wtk.component.support.border.BorderSupport;
-import org.wtk.component.support.border.IBorderSupport;
+import org.wtk.component.border.support.BorderSupport;
+import org.wtk.component.border.support.IBorderSupport;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package org.wtk.component.support.border;
+package org.wtk.component.border.support;
 
 /**
  * @author Yoav Aharoni

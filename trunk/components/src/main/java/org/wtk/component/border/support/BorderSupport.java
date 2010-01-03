@@ -1,4 +1,4 @@
-package org.wtk.component.support.border;
+package org.wtk.component.border.support;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
