@@ -2,8 +2,8 @@ package org.wtk.component.panel.border.titled;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.wtk.api.Titled;
 import org.wtk.component.panel.base.BasePanel;
+import org.wtk.model.Titled;
 
 /**
  * @author Yoav Aharoni

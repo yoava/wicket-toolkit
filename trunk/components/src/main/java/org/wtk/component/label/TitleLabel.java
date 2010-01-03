@@ -2,7 +2,7 @@ package org.wtk.component.label;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
-import org.wtk.api.Titled;
+import org.wtk.model.Titled;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 

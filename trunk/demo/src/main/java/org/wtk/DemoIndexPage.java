@@ -6,7 +6,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.wtk.component.page.BasePage;
-import org.wtk.feedback.behavior.FeedbackTargetBehavior;
+import org.wtk.feedback.distributed.FeedbackTargetBehavior;
 import org.wtk.feedback.handler.AlertFeedbackHandler;
 import org.wtk.feedback.handler.DistributedFeedbackHandler;
 import org.wtk.jquery.behavior.feedback.FieldMarkerFeedbackHandler;

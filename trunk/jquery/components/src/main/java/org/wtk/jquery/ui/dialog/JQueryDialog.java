@@ -5,13 +5,13 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
-import org.wtk.api.Titled;
 import org.wtk.behavior.ajax.EventlessAjaxBehavior;
 import org.wtk.component.panel.base.BasePanel;
 import org.wtk.component.support.plugin.PluginManager;
 import org.wtk.jquery.model.JQuery;
 import org.wtk.jquery.model.JQueryOption;
 import org.wtk.jquery.ui.util.JQueryOptionSerializer;
+import org.wtk.model.Titled;
 
 import java.io.Serializable;
 

@@ -7,7 +7,6 @@ import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.wtk.api.Titled;
 import org.wtk.behavior.head.MetaHttpEquiv;
 import org.wtk.behavior.head.PageTitle;
 import org.wtk.component.container.TrasparentContainer;
@@ -15,6 +14,7 @@ import org.wtk.component.panel.base.BasePanel;
 import org.wtk.component.support.border.BorderSupport;
 import org.wtk.component.support.border.IBorderSupport;
 import org.wtk.component.support.plugin.PluginManager;
+import org.wtk.model.Titled;
 import org.wtk.model.annotation.WicketProperty;
 
 /**
