@@ -40,11 +40,6 @@ public class JsFeedbackDispatcherPlugin extends Plugin<List<FeedbackMessage>> im
 		return false;
 	}
 
-	@Override
-	protected void onAfterRender() {
-		super.onAfterRender();
-	}
-
 	private String getScript() {
 		JSBuilder initScript = new JSBuilder();
 

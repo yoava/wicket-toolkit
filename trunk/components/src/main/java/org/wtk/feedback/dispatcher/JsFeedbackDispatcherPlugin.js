@@ -1,16 +1,10 @@
 wtk.feedback = {
-	handlers: {},
+	dirty: false,
+	handlers: new Array(),
 
 	addHandler: function(handler) {
-		this.handlers[handler.id] = handler;
-	},
-
-	removeHandler: function(handler) {
-		if (typeof handler == 'string') {
-			delete this.handlers[handler];
-		} else {
-			delete this.handlers[handler.id];
-		}
+		this.dirty = true;
+		this.handlers.push(handler);
 	},
 
 	msg: function(reporter, message, level) {
@@ -22,10 +16,13 @@ wtk.feedback = {
 	},
 
 	dispatch: function(messages) {
-		var handlers = wtk.feedback.handlers;
-		for (var id in handlers) {
-			handlers[id].onFeedback(messages);
+		if (this.dirty) {
+			this.dirty = false;
+			this.handlers.sort(this._compare);
 		}
+		wtk.each(this.handlers, function() {
+			this.onFeedback(messages);
+		});
 		this.cleanup(messages);
 	},
 
@@ -33,6 +30,13 @@ wtk.feedback = {
 		wtk.each(messages, function() {
 			this.reporter = null;
 		});
+	},
+
+	_compare: function(a, b) {
+		if (a.priority == b.priority) {
+			return 0;
+		}
+		return a.priority < b.priority ? 1 : -1;
 	}
 };
 
@@ -44,8 +48,13 @@ wtk.feedback.Handler = wtk.clazz({
 	ERROR: 'ERROR',
 	FATAL: 'FATAL',
 
-	initialize: function(id) {
-		this.id = id;
+	/**
+	 * Higher priority comes first (0 invoked last).
+	 * Usually value between 0 to 100 or value above 100 for non-capturing handlers.
+	 */
+	priority: 0,
+
+	initialize: function() {
 	},
 
 	onFeedback: wtk.nop

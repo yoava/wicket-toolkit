@@ -23,7 +23,7 @@ public class ResponseUtils {
 		}
 	}
 
-	public static Page getResponsePage() {
+	public static Page getCurrentPage() {
 		return CurrentPageSupport.getCurrentPage();
 	}
 

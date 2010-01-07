@@ -1,15 +1,16 @@
 package org.wtk.feedback.handler;
 
-import org.wtk.feedback.dispatcher.BaseJsFeedbackHandler;
+import org.wtk.feedback.dispatcher.BaseFeedbackHandler;
 
 /**
  * @author Yoav Aharoni
  */
-public class DistributedFeedbackHandler extends BaseJsFeedbackHandler {
+public class DistributedFeedbackHandler extends BaseFeedbackHandler {
 	private static final DistributedFeedbackHandler INSTANCE = new DistributedFeedbackHandler();
 
 	private DistributedFeedbackHandler() {
 		super(DistributedFeedbackHandler.class, "DistributeHandler");
+		dependsOn(BaseContainerHandler.get());
 		addJavaScript();
 	}
 

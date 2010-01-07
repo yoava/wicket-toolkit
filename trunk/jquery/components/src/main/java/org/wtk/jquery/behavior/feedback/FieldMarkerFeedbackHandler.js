@@ -1,5 +1,7 @@
 (function($) {
 	wtk.feedback.FieldMarker = wtk.clazz(wtk.feedback.MessageHandler, {
+		priority: 110,
+
 		cssClass: 'feedback-marker',
 		tagNames: {
 			'select': true,

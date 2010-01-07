@@ -1,12 +1,12 @@
 package org.wtk.jquery.behavior.feedback;
 
-import org.wtk.feedback.dispatcher.BaseJsFeedbackHandler;
+import org.wtk.feedback.dispatcher.BaseFeedbackHandler;
 import org.wtk.jquery.resource.JQueryHeadResource;
 
 /**
  * @author Yoav Aharoni
  */
-public class FieldMarkerFeedbackHandler extends BaseJsFeedbackHandler {
+public class FieldMarkerFeedbackHandler extends BaseFeedbackHandler {
 	private static final FieldMarkerFeedbackHandler INSTANCE = new FieldMarkerFeedbackHandler();
 
 	private FieldMarkerFeedbackHandler() {

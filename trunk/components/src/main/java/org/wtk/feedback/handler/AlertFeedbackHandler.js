@@ -1,17 +1,20 @@
 wtk.feedback.AlertHandler = wtk.clazz(wtk.feedback.Handler, {
-	format: function(reporter, message, level) {
-		return ${format};
+	priority: 0,
+
+	initialize: function(format) {
+		this.$super.initialize.apply(this, arguments);
+		this.format = format;
 	},
 
 	onFeedback: function(messages) {
-		var message = '';
+		var text = '';
 
 		wtk.each(messages, function(msg) {
-			message += this.format(msg.reporter, msg.message, msg.level) + '\n';
+			text += this.format(msg.message, msg.level, msg.reporter) + '\n';
 		}, this);
 
-		if (message) {
-			alert(message);
+		if (text) {
+			alert(text);
 		}
 	}
 });

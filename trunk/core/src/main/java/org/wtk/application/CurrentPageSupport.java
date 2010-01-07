@@ -52,5 +52,10 @@ public class CurrentPageSupport implements IComponentInstantiationListener {
 		public void afterRender(Component component) {
 			setCurrentPage(null);
 		}
+
+		@Override
+		public void exception(Component component, RuntimeException exception) {
+			setCurrentPage(null);
+		}
 	}
 }

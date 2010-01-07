@@ -6,7 +6,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.wtk.component.page.BasePage;
-import org.wtk.feedback.distributed.FeedbackTargetBehavior;
+import org.wtk.feedback.FeedbackContainer;
 import org.wtk.feedback.handler.AlertFeedbackHandler;
 import org.wtk.feedback.handler.DistributedFeedbackHandler;
 import org.wtk.jquery.behavior.feedback.FieldMarkerFeedbackHandler;
@@ -27,6 +27,7 @@ public class DemoIndexPage extends BasePage {
 //        wrap(new StyledBorderPanel());
 //        getBodyContainer().add(new CssClass("test"));
 //        add(new SubClassPanel("panel").wrap(new TitledPanel("MY TITLE")).wrap(new StyledBorderPanel()));
+
 		add(new AjaxLink("test") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
@@ -34,9 +35,16 @@ public class DemoIndexPage extends BasePage {
 			}
 		});
 
-
-		final WebMarkupContainer feedback = new WebMarkupContainer("feedback");
+		final FeedbackContainer feedback = new FeedbackContainer("feedback");
+		feedback.setDefault(true);
 		add(feedback);
+
+		final WebMarkupContainer form = new WebMarkupContainer("form");
+		add(form);
+
+		final FeedbackContainer formFeedback = new FeedbackContainer("feedback");
+		form.add(formFeedback);
+		formFeedback.addFeedbackSource(form);
 
 		final TextField field = new TextField("text");
 		field.add(new AjaxEventBehavior("ondblclick") {
@@ -46,11 +54,12 @@ public class DemoIndexPage extends BasePage {
 			}
 		});
 		field.setOutputMarkupId(true);
-		add(field);
+		form.add(field);
+
 		field.error("[[error]] Test");
 		field.debug("debug Test");
 		field.info("info Test");
 
-		field.add(new FeedbackTargetBehavior(feedback));
+		feedback.info("general [[info]]");
 	}
 }

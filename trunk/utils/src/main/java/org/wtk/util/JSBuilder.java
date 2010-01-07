@@ -1,6 +1,8 @@
 package org.wtk.util;
 
 import net.sf.json.JSONArray;
+import net.sf.json.util.JSONUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.util.string.JavascriptStripper;
 
 import java.io.Serializable;
@@ -60,6 +62,9 @@ public class JSBuilder implements CharSequence, Appendable, Serializable {
 	}
 
 	public JSBuilder commaList(Object... parameters) {
+		if (parameters == null) {
+			return this;
+		}
 		final JSONArray json = JSONArray.fromObject(parameters);
 		script.append(json.join(","));
 		return this;
@@ -112,6 +117,32 @@ public class JSBuilder implements CharSequence, Appendable, Serializable {
 	@Override
 	public CharSequence subSequence(int start, int end) {
 		return script.subSequence(start, end);
+	}
+
+	public JSBuilder interpolatedString(String javascript) {
+		if (StringUtils.isEmpty(javascript)) {
+			append("\"\"");
+			return this;
+		}
+
+		int index = 0;
+		while (true) {
+			final int startIndex = javascript.indexOf("${", index);
+			if (startIndex < 0) {
+				break;
+			}
+			final int endIndex = javascript.indexOf("}", startIndex);
+			if (endIndex < 0) {
+				break;
+			}
+			append(JSONUtils.quote(javascript.substring(index, startIndex)));
+			append("+");
+			append(javascript.substring(startIndex + 2, endIndex));
+			append("+");
+			index = endIndex + 1;
+		}
+		append(JSONUtils.quote(javascript.substring(index)));
+		return this;
 	}
 
 	private void list(String[] parameters) {
