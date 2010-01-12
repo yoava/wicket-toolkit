@@ -35,9 +35,13 @@ wtk.feedback.DistributeHandler = wtk.clazz(wtk.feedback.BaseContainerHandler, {
 	findFeedbackContainer: function() {
 		var node = this.context.message.reporter;
 		while (node && node != document.body) {
-			var feedbackId = node.getAttribute('wtk:feedback');
-			if (feedbackId) {
-				return wtk.byId(feedbackId);
+			// node.getAttribute('wtk:feedback') fails for table nodes in IE
+			try {
+				var feedbackId = node.getAttribute('wtk:feedback');
+				if (feedbackId) {
+					return wtk.byId(feedbackId);
+				}
+			} catch (e) {
 			}
 			node = node.parentNode;
 		}

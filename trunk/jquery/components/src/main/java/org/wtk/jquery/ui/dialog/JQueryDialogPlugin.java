@@ -1,6 +1,8 @@
 package org.wtk.jquery.ui.dialog;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.wtk.behavior.css.CssClass;
 import org.wtk.behavior.head.HeadResource;
 import org.wtk.component.list.ComponentListView;
@@ -10,12 +12,10 @@ import org.wtk.util.Ajax;
 
 import java.util.Iterator;
 
-import static org.wtk.util.ResponseUtils.renderJavaScript;
-
 /**
  * @author Yoav Aharoni
  */
-public class JQueryDialogPlugin extends Plugin {
+public class JQueryDialogPlugin extends Plugin implements IHeaderContributor {
 	private static final HeadResource HEAD_RESOURCE = new HeadResource(JQueryDialogPlugin.class)
 			.addJavaScript()
 			.dependsOn(JQueryUIHeadResource.get());
@@ -59,10 +59,13 @@ public class JQueryDialogPlugin extends Plugin {
 	}
 
 	@Override
-	protected void onAfterRender() {
-		super.onAfterRender();
-		Ajax.appendJavascript("jQuery.wtk.dialog.cleanup();");
-		renderJavaScript(getRenderScript());
+	public void renderHead(IHeaderResponse response) {
+		if (Ajax.isAjaxRequest()) {
+			Ajax.appendJavascript("jQuery.wtk.dialog.cleanup();");
+			Ajax.appendJavascript(getRenderScript());
+		} else {
+			response.renderOnDomReadyJavascript(getRenderScript());
+		}
 	}
 
 	@SuppressWarnings({"unchecked"})
