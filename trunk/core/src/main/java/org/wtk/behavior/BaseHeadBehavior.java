@@ -20,12 +20,12 @@ public class BaseHeadBehavior<T extends Serializable> extends AbstractBehavior {
 		this(new Model(value));
 	}
 
-	public IModel getModel() {
-		return model;
-	}
-
 	@SuppressWarnings({"unchecked"})
 	public T getModelObject() {
 		return model == null ? null : (T) model.getObject();
+	}
+
+	public IModel getModel() {
+		return model;
 	}
 }

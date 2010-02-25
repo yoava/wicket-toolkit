@@ -5,14 +5,14 @@
 	<groupId>org.wtk</groupId>
 	<artifactId>wicket-toolkit-components</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.1-SNAPSHOT</version>
 
 	<name>Wicket Toolkit: Components</name>
 
 	<parent>
 		<groupId>org.wtk</groupId>
 		<artifactId>wicket-toolkit-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>

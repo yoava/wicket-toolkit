@@ -26,16 +26,16 @@ public class AlertFeedbackHandler extends BaseFeedbackHandler {
 				.end().toString();
 	}
 
+	@Override
+	protected Object[] getParameters() {
+		return new Object[]{format};
+	}
+
 	public static AlertFeedbackHandler get() {
 		return INSTANCE;
 	}
 
 	public static AlertFeedbackHandler get(String format) {
 		return new AlertFeedbackHandler(format);
-	}
-
-	@Override
-	protected Object[] getParameters() {
-		return new Object[]{format};
 	}
 }

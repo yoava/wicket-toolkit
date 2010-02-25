@@ -31,7 +31,7 @@ public class BaseFeedbackHandler extends HeadResource {
 	}
 
 	private String getInitScript() {
-		return String.format("wtk.feedback.addHandler(new wtk.feedback.%s(%s))", javascriptHandler, new JSBuilder().commaList(getParameters()));
+		return String.format("wtk.feedback.addHandler(new wtk.feedback.%s(%s));", javascriptHandler, new JSBuilder().commaList(getParameters()));
 	}
 
 	protected String getScriptId() {

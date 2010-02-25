@@ -139,11 +139,6 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 		return this;
 	}
 
-	@SuppressWarnings({"unchecked"})
-	private static HashMap<Class, HeadResource> getReplaceMap(Page page) {
-		return (HashMap<Class, HeadResource>) page.getMetaData(REPLACE_KEY);
-	}
-
 	/**
 	 * Checks if this resource is replaced by another resource.
 	 * If so, renders replacing resource.
@@ -372,5 +367,10 @@ public class HeadResource extends AbstractBehavior implements IHeaderContributor
 		protected abstract void renderInline(String content, IHeaderResponse response, Context context);
 
 		protected abstract void renderReference(IHeaderResponse response, Context context);
+	}
+
+	@SuppressWarnings({"unchecked"})
+	private static HashMap<Class, HeadResource> getReplaceMap(Page page) {
+		return (HashMap<Class, HeadResource>) page.getMetaData(REPLACE_KEY);
 	}
 }

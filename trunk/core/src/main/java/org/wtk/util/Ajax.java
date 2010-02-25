@@ -14,6 +14,32 @@ public final class Ajax {
 	private Ajax() {
 	}
 
+	public static final class Feedback {
+		private Feedback() {
+		}
+
+		public static void refreshFeedback() {
+			Page page = RequestCycle.get().getResponsePage();
+			refreshFeedback(page);
+		}
+
+		public static void refreshFeedback(MarkupContainer container) {
+			final AjaxRequestTarget target = getTarget();
+			if (container == null || target == null) {
+				return;
+			}
+			container.visitChildren(IFeedback.class, new Component.IVisitor() {
+				@Override
+				public Object component(Component component) {
+					if (component.getOutputMarkupId()) {
+						target.addComponent(component);
+					}
+					return CONTINUE_TRAVERSAL;
+				}
+			});
+		}
+	}
+
 	public static void render(Component... components) {
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
 		if (target != null) {
@@ -57,31 +83,5 @@ public final class Ajax {
 
 	public static boolean isAjaxRequest() {
 		return getTarget() != null;
-	}
-
-	public static final class Feedback {
-		private Feedback() {
-		}
-
-		public static void refreshFeedback() {
-			Page page = RequestCycle.get().getResponsePage();
-			refreshFeedback(page);
-		}
-
-		public static void refreshFeedback(MarkupContainer container) {
-			final AjaxRequestTarget target = getTarget();
-			if (container == null || target == null) {
-				return;
-			}
-			container.visitChildren(IFeedback.class, new Component.IVisitor() {
-				@Override
-				public Object component(Component component) {
-					if (component.getOutputMarkupId()) {
-						target.addComponent(component);
-					}
-					return CONTINUE_TRAVERSAL;
-				}
-			});
-		}
 	}
 }

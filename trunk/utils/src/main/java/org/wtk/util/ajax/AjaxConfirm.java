@@ -15,10 +15,6 @@ public class AjaxConfirm {
 	private AjaxConfirm() {
 	}
 
-	public static AjaxConfirm get() {
-		return INSTANCE;
-	}
-
 	public void confirm(ConfirmDialog dialog) {
 		final ConfirmAjaxBehavior eventBehavior = new ConfirmAjaxBehavior(dialog);
 		RequestCycle.get().getResponsePage().add(eventBehavior);
@@ -52,5 +48,9 @@ public class AjaxConfirm {
 					.call("confirm", dialog.getMessage()).append(';')
 					.append(super.generateCallbackScript(partialCall + "+'&confirm=' + ok"));
 		}
+	}
+
+	public static AjaxConfirm get() {
+		return INSTANCE;
 	}
 }

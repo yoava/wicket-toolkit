@@ -34,6 +34,18 @@ public class PluginManager extends ComponentListView<Plugin> implements IPluginM
 		return (T) createPlugin(pluginClass);
 	}
 
+	private Plugin createPlugin(Class<? extends Plugin> pluginClass) {
+		try {
+			Plugin plugin = pluginClass.newInstance();
+			addItem(plugin);
+			return plugin;
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static IPluginManager get() {
 		IPluginManager pluginManager = locator.locate();
 		if (pluginManager == null) {
@@ -56,18 +68,6 @@ public class PluginManager extends ComponentListView<Plugin> implements IPluginM
 
 	public static void setLocator(IPluginManagerLocator locator) {
 		PluginManager.locator = locator;
-	}
-
-	private Plugin createPlugin(Class<? extends Plugin> pluginClass) {
-		try {
-			Plugin plugin = pluginClass.newInstance();
-			addItem(plugin);
-			return plugin;
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 }

@@ -2,7 +2,7 @@
 	wtk.feedback.FieldMarker = wtk.clazz(wtk.feedback.MessageHandler, {
 		priority: 110,
 
-		cssClass: 'feedback-marker',
+		cssClass: '',
 		tagNames: {
 			'select': true,
 			'textarea': true
@@ -14,6 +14,10 @@
 			'radio': true,
 			'checkbox': true,
 			'file': true
+		},
+
+		initialize: function(cssClass) {
+			this.cssClass = cssClass;
 		},
 
 		onClear: function() {
@@ -52,7 +56,7 @@
 		mark: function() {
 			with (this.context.message) {
 				var marker = document.createElement('span');
-				marker.className = this.cssClass + ' ' + this.cssClass + '-' + level;
+				marker.className = this.cssClass + ' ' + this.cssClass + '-' + level.toLowerCase();
 				$(reporter).wrap(marker);
 				this.rendered();
 			}

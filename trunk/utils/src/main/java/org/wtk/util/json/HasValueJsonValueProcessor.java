@@ -23,11 +23,11 @@ public class HasValueJsonValueProcessor implements JsonValueProcessor {
 		return toJSON(hasValue.getValue());
 	}
 
-	public static HasValueJsonValueProcessor getInstance() {
-		return INSTANCE;
-	}
-
 	private Object toJSON(Object o) {
 		return JSONArray.fromObject(new Object[]{o}).get(0);
+	}
+
+	public static HasValueJsonValueProcessor getInstance() {
+		return INSTANCE;
 	}
 }

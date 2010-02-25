@@ -22,6 +22,24 @@ public class CurrentPageSupport implements IComponentInstantiationListener {
 		}
 	}
 
+	private static class UpdateCurrentPageBehavior extends BaseBehavior {
+		@Override
+		public void beforeRender(Component component) {
+			final Page page = (Page) component;
+			setCurrentPage(page);
+		}
+
+		@Override
+		public void afterRender(Component component) {
+			setCurrentPage(null);
+		}
+
+		@Override
+		public void exception(Component component, RuntimeException exception) {
+			setCurrentPage(null);
+		}
+	}
+
 	public static Page getCurrentPage() {
 		final RequestCycle requestCycle = RequestCycle.get();
 		if (requestCycle == null) {
@@ -38,24 +56,6 @@ public class CurrentPageSupport implements IComponentInstantiationListener {
 		final RequestCycle requestCycle = RequestCycle.get();
 		if (requestCycle != null) {
 			requestCycle.setMetaData(CURRENT_PAGE, page);
-		}
-	}
-
-	private static class UpdateCurrentPageBehavior extends BaseBehavior {
-		@Override
-		public void beforeRender(Component component) {
-			final Page page = (Page) component;
-			setCurrentPage(page);
-		}
-
-		@Override
-		public void afterRender(Component component) {
-			setCurrentPage(null);
-		}
-
-		@Override
-		public void exception(Component component, RuntimeException exception) {
-			setCurrentPage(null);
 		}
 	}
 }
