@@ -41,9 +41,10 @@
 
 	<distributionManagement>
 		<repository>
-			<id>third-party-local</id>
-			<name>third-party-local</name>
-			<url>http://devtools:8080/artifactory/third-party-local</url>
+			<id>yoava</id>
+			<name>AOL yoava</name>
+			<!--<url>http://yoava.artifactoryonline.com/yoava/libs-releases-local</url>-->
+			<url>http://yoava.artifactoryonline.com/yoava/libs-snapshots-local</url>
 		</repository>
 	</distributionManagement>
 
@@ -135,7 +136,9 @@
 				<groupId>net.sf.json-lib</groupId>
 				<artifactId>json-lib</artifactId>
 				<version>2.3</version>
+				<classifier>jdk15</classifier>
 			</dependency>
+
 			<!--  jetty dependencies for testing  -->
 
 			<dependency>
