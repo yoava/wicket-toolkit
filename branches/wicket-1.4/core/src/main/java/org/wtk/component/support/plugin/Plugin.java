@@ -1,6 +1,7 @@
 package org.wtk.component.support.plugin;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.wtk.behavior.css.HiddenStyle;
 
 import static org.wtk.component.list.ComponentListView.ITEM_ID;
@@ -16,13 +17,31 @@ public class Plugin<T> extends Panel {
 		}
 	}
 
-	@SuppressWarnings({"unchecked"})
 	public T getPluginModelObject() {
-		return (T) getModelObject();
+		return getModelObject();
 	}
 
 	public void setPluginModelObject(T object) {
-		setModelObject(object);
+		setDefaultModelObject(object);
+	}
+
+	public void setModel(IModel<T> model) {
+		setDefaultModel(model);
+	}
+
+	@SuppressWarnings({"unchecked"})
+	public IModel<T> getModel() {
+		return (IModel<T>) getDefaultModel();
+	}
+
+	@SuppressWarnings({"unchecked"})
+	public T getModelObject() {
+		return (T) getDefaultModelObject();
+	}
+
+	public void setModelObject(T object) {
+		setDefaultModelObject(object);
+
 	}
 
 	protected boolean isHiddenStyle() {

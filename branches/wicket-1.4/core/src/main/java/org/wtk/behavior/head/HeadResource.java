@@ -34,7 +34,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author Yoav Aharoni
  */
 public class HeadResource extends AbstractBehavior implements IHeaderContributor {
-	private static final MetaDataKey REPLACE_KEY = new MetaDataKey(HashMap.class) {
+	private static final MetaDataKey<HashMap> REPLACE_KEY = new MetaDataKey<HashMap>() {
 	};
 
 	private static final Logger log = LoggerFactory.getLogger(HeadResource.class);

@@ -17,7 +17,7 @@ public class PageTitle extends AbstractBehavior {
 	}
 
 	public PageTitle(String title) {
-		this(new Model(title));
+		this(new Model<String>(title));
 	}
 
 	@Override

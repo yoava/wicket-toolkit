@@ -28,7 +28,7 @@ public final class Ajax {
 			if (container == null || target == null) {
 				return;
 			}
-			container.visitChildren(IFeedback.class, new Component.IVisitor() {
+			container.visitChildren(IFeedback.class, new Component.IVisitor<Component>() {
 				@Override
 				public Object component(Component component) {
 					if (component.getOutputMarkupId()) {

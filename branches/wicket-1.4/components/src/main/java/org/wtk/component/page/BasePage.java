@@ -64,7 +64,7 @@ public class BasePage extends WebPage implements Titled, IBorderSupport<BasePage
 
 	@Override
 	public String getTitle() {
-		return getString("page.title", new Model(this));
+		return getString("page.title", new Model<BasePage>(this));
 	}
 
 	@WicketProperty
@@ -81,15 +81,15 @@ public class BasePage extends WebPage implements Titled, IBorderSupport<BasePage
 	}
 
 	public String getContentType() {
-		return getString("page.contentType", new Model(this));
+		return getString("page.contentType", new Model<BasePage>(this));
 	}
 
 	public String getDocTypeDeclaration() {
-		return getString("page.docTypeDeclaration", new Model(this));
+		return getString("page.docTypeDeclaration", new Model<BasePage>(this));
 	}
 
 	public String getXmlDeclaration() {
-		return getString("page.xmlDeclaration", new Model(this));
+		return getString("page.xmlDeclaration", new Model<BasePage>(this));
 	}
 
 	@Override

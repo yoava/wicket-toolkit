@@ -18,15 +18,15 @@ public class TitledPanel extends BasePanel<String> implements Titled {
 
 	@Override
 	public String getTitle() {
-		return getModelObjectAsString();
+		return getDefaultModelObjectAsString();
 	}
 
 	public TitledPanel setTitle(String title) {
-		setModel(new Model(title));
+		setModel(new Model<String>(title));
 		return this;
 	}
 
-	public TitledPanel setTitle(IModel titleModel) {
+	public TitledPanel setTitle(IModel<String> titleModel) {
 		setModel(titleModel);
 		return this;
 	}

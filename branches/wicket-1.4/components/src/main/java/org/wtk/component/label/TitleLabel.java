@@ -16,6 +16,6 @@ public class TitleLabel extends Label {
 
 	@Override
 	public boolean isVisible() {
-		return super.isVisible() && !isEmpty(getModelObjectAsString());
+		return super.isVisible() && !isEmpty(getDefaultModelObjectAsString());
 	}
 }

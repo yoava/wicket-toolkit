@@ -19,7 +19,7 @@ public class HierarchyPluginManagerLocator implements IPluginManagerLocator {
 
 	@Override
 	public IPluginManager locate(Page page) {
-		Object result = page.visitChildren(IPluginManager.class, new Component.IVisitor() {
+		Object result = page.visitChildren(IPluginManager.class, new Component.IVisitor<Component>() {
 			@Override
 			public Object component(Component component) {
 				return component;

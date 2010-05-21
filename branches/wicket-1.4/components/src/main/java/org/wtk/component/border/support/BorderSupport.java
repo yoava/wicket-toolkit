@@ -152,7 +152,7 @@ public class BorderSupport extends MarkupContainer implements IBorderSupport<Bor
 		markupIndex = markupStream.getCurrentIndex();
 		BasePanel border = getBorder();
 		if (border != null) {
-			border.markRendering();
+			border.markRendering(true);
 			border.renderAssociatedMarkup("panel",
 					"Markup for a BasePanel component has to contain part '<wicket:extend>'");
 			border.rendered();

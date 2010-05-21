@@ -17,7 +17,7 @@ public class BaseHeadBehavior<T extends Serializable> extends AbstractBehavior {
 	}
 
 	public BaseHeadBehavior(T value) {
-		this(new Model(value));
+		this(new Model<T>(value));
 	}
 
 	@SuppressWarnings({"unchecked"})

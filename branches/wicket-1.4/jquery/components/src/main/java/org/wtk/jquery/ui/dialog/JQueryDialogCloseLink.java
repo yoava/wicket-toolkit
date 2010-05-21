@@ -21,7 +21,7 @@ public class JQueryDialogCloseLink extends AjaxLink {
 	@Override
 	public void onClick(AjaxRequestTarget target) {
 		if (dialog == null) {
-			dialog = (JQueryDialog) findParent(JQueryDialog.class);
+			dialog = findParent(JQueryDialog.class);
 			if (dialog == null) {
 				final String message = String.format("JQueryDialogCloseLink[id=%s] Can't find JQueryDialog to close.", getId());
 				throw new RuntimeException(message);

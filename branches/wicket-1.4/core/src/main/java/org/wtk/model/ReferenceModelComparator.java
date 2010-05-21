@@ -12,7 +12,7 @@ public class ReferenceModelComparator implements IModelComparator {
 	@Override
 	@SuppressWarnings({"ObjectEquality"})
 	public boolean compare(Component component, Object newObject) {
-		final Object object = component.getModelObject();
+		final Object object = component.getDefaultModelObject();
 		return object == newObject;
 	}
 

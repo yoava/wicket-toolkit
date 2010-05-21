@@ -10,7 +10,7 @@ import org.apache.wicket.model.Model;
  */
 public class CssStyle extends AttributeAppender {
 	public CssStyle(final String attribute, final String value) {
-		super("style", true, new Model(attribute + ":" + value), ";");
+		super("style", true, new Model<String>(attribute + ":" + value), ";");
 	}
 
 	public CssStyle(final String attribute, final IModel model) {

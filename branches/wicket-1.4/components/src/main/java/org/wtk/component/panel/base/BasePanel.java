@@ -76,11 +76,11 @@ public class BasePanel<T extends Serializable> extends Panel implements IBorderS
 	}
 
 
-	public IModel resourceModel(String key) {
+	public IModel<String> resourceModel(String key) {
 		return resourceModel(key, null);
 	}
 
-	public IModel resourceModel(String key, String defaultValue) {
+	public IModel<String> resourceModel(String key, String defaultValue) {
 		return new PanelResourceModel(key, defaultValue);
 	}
 
@@ -118,7 +118,7 @@ public class BasePanel<T extends Serializable> extends Panel implements IBorderS
 	}
 
 	public String getSafeString(String key) {
-		return getString(key, new Model(this), "");
+		return getString(key, new Model<BasePanel>(this), "");
 	}
 
 	@Override
@@ -126,13 +126,31 @@ public class BasePanel<T extends Serializable> extends Panel implements IBorderS
 		return getBorderSupport().getBorder();
 	}
 
+	public void setModel(IModel<T> model) {
+		setDefaultModel(model);
+	}
+
+	@SuppressWarnings({"unchecked"})
+	public IModel<T> getModel() {
+		return (IModel<T>) getDefaultModel();
+	}
+
+	@SuppressWarnings({"unchecked"})
+	public T getModelObject() {
+		return (T) getDefaultModelObject();
+	}
+
+	public void setModelObject(T object) {
+		setDefaultModelObject(object);
+	}
+
 	@SuppressWarnings({"unchecked"})
 	public T getPanelModelObject() {
-		return (T) getModelObject();
+		return getModelObject();
 	}
 
 	public void setPanelModelObject(T object) {
-		setModelObject(object);
+		setDefaultModelObject(object);
 	}
 
 	@Override
@@ -151,7 +169,7 @@ public class BasePanel<T extends Serializable> extends Panel implements IBorderS
 		}
 
 		public PanelResourceModel(String key, String defaultValue) {
-			super(key, BasePanel.this, getModel(), defaultValue);
+			super(key, BasePanel.this, getDefaultModel(), defaultValue);
 		}
 
 		@Override

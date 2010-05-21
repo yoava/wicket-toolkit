@@ -11,7 +11,7 @@ import org.wtk.behavior.BaseBehavior;
  * @author Yoav Aharoni
  */
 public class CurrentPageSupport implements IComponentInstantiationListener {
-	private static final MetaDataKey CURRENT_PAGE = new MetaDataKey(Page.class) {
+	private static final MetaDataKey<Page> CURRENT_PAGE = new MetaDataKey<Page>() {
 	};
 
 	@Override
@@ -45,7 +45,7 @@ public class CurrentPageSupport implements IComponentInstantiationListener {
 		if (requestCycle == null) {
 			return null;
 		}
-		final Page current = (Page) requestCycle.getMetaData(CURRENT_PAGE);
+		final Page current = requestCycle.getMetaData(CURRENT_PAGE);
 		if (current != null) {
 			return current;
 		}
