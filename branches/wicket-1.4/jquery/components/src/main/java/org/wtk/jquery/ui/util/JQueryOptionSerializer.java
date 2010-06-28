@@ -44,7 +44,9 @@ public class JQueryOptionSerializer<T> {
 		final Map<String, Object> map = new HashMap<String, Object>(optionsProperties.size());
 		for (Option option : optionsProperties) {
 			final Object value = PropertyResolver.getValue(option.property, options);
-			map.put(option.optionName, value);
+			if (value != null) {
+				map.put(option.optionName, value);
+			}
 		}
 		return map;
 	}

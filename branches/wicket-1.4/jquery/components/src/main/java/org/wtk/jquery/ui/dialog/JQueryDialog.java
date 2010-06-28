@@ -279,7 +279,10 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	}
 
 	JQueryDialog getWrappingDialog() {
+		byte i=0;
+		i++;
 		return wrappingDialog;
+
 	}
 
 	private JQueryDialogPlugin getPlugin() {

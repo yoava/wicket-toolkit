@@ -18,7 +18,7 @@ public class JQueryHeadResource extends HeadResource {
 		dependsOn(JQueryCommonCss.get());
 		dependsOn(JQueryDefaultTheme.get());
 
-		addJavaScript("js/jquery-1.3.2.min.js");
+		addJavaScript("js/jquery-1.4.2.min.js");
 		addJavaScript();
 	}
 

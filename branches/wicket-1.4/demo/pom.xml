@@ -6,14 +6,14 @@
 	<groupId>org.wtk</groupId>
 	<artifactId>wicket-toolkit-demo</artifactId>
 	<packaging>war</packaging>
-	<version>1.4-SNAPSHOT</version>
+	<version>1.4.2-SNAPSHOT</version>
 
 	<name>Wicket Toolkit: Demo Application</name>
 
 	<parent>
 		<groupId>org.wtk</groupId>
 		<artifactId>wicket-toolkit-parent</artifactId>
-		<version>1.4-SNAPSHOT</version>
+		<version>1.4.2-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
