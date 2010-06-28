@@ -1,19 +1,28 @@
 package org.wtk.jquery.ui.dialog;
 
+import net.sf.json.JSONFunction;
 import net.sf.json.JSONObject;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.wtk.behavior.ajax.EventlessAjaxBehavior;
+import org.wtk.behavior.ajax.EventlessAjaxFormSubmitBehavior;
 import org.wtk.component.panel.base.BasePanel;
 import org.wtk.component.support.plugin.PluginManager;
 import org.wtk.jquery.model.JQuery;
 import org.wtk.jquery.model.JQueryOption;
 import org.wtk.jquery.ui.util.JQueryOptionSerializer;
 import org.wtk.model.Titled;
+import org.wtk.util.Ajax;
+import org.wtk.util.ModelUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.String.format;
 import static org.wtk.component.list.ComponentListView.ITEM_ID;
@@ -44,6 +53,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	private String closeText;
 	private String cssClass;
 	private String title;
+	private List<IDialogButton> buttons;
 
 	private boolean bgiFrame = false;
 	private boolean draggable = true;
@@ -65,6 +75,31 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 
 	public BasePanel wrap(Form form) {
 		wrappingDialog = new JQueryDialogFormWrapper(this, form);
+		return this;
+	}
+
+	public JQueryDialog<T> add(IDialogButton button) {
+		return addButton(button);
+	}
+
+	public JQueryDialog<T> remove(IDialogButton button) {
+		return removeButton(button);
+	}
+
+	public JQueryDialog<T> addButton(IDialogButton button) {
+		if (buttons == null) {
+			buttons = new ArrayList<IDialogButton>();
+		}
+		buttons.add(button);
+		add((IBehavior) button);
+		return this;
+	}
+
+	public JQueryDialog<T> removeButton(IDialogButton button) {
+		if (buttons != null) {
+			buttons.remove(button);
+			remove((IBehavior) button);
+		}
 		return this;
 	}
 
@@ -146,9 +181,15 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		return this;
 	}
 
-	@JQueryOption()
-	public String getButtons() {
-		return null;
+	@JQueryOption("buttons")
+	public JSONObject getButtonsObject() {
+		final JSONObject jsonObject = new JSONObject();
+		for (IDialogButton button : buttons) {
+			final String text = ModelUtils.toString(button.getTextModel());
+			final JSONFunction jsonFunction = new JSONFunction(button.getCallScript());
+			jsonObject.put(text, jsonFunction);
+		}
+		return jsonObject;
 	}
 
 	@JQueryOption()
@@ -209,7 +250,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		return true;
 	}
 
-	@JQueryOption(name = "bgiframe")
+	@JQueryOption("bgiframe")
 	public boolean isBgiFrame() {
 		return bgiFrame;
 	}
@@ -219,12 +260,12 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		return this;
 	}
 
-	@JQueryOption(name = "close")
+	@JQueryOption("close")
 	public final String getInternalCloseScript() {
 		return closeEvent.getCallFunction();
 	}
 
-	@JQueryOption(name = "dialogClass")
+	@JQueryOption("dialogClass")
 	public String getCssClass() {
 		return cssClass;
 	}
@@ -234,7 +275,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		return this;
 	}
 
-	@JQueryOption(name = "hide")
+	@JQueryOption("hide")
 	public JQuery.Effect getHideEffect() {
 		return hideEffect;
 	}
@@ -244,7 +285,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		return this;
 	}
 
-	@JQueryOption(name = "show")
+	@JQueryOption("show")
 	public JQuery.Effect getShowEffect() {
 		return showEffect;
 	}
@@ -254,7 +295,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		return this;
 	}
 
-	@JQueryOption(name = "zIndex")
+	@JQueryOption("zIndex")
 	public int getZIndex() {
 		return zIndex;
 	}
@@ -279,8 +320,6 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	}
 
 	JQueryDialog getWrappingDialog() {
-		byte i=0;
-		i++;
 		return wrappingDialog;
 
 	}
@@ -327,6 +366,78 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 		@Override
 		protected IAjaxCallDecorator getAjaxCallDecorator() {
 			return JQueryDialog.this.getAjaxCallDecorator();
+		}
+	}
+
+	public interface IDialogButton extends IBehavior {
+		IModel<String> getTextModel();
+
+		String getCallScript();
+	}
+
+	public static abstract class DialogButton extends EventlessAjaxBehavior implements IDialogButton {
+		private IModel<String> textModel;
+
+		protected DialogButton(IModel<String> textModel) {
+			this.textModel = textModel;
+		}
+
+		protected DialogButton(String text) {
+			this.textModel = new Model<String>(text);
+		}
+
+		public IModel<String> getTextModel() {
+			return textModel;
+		}
+	}
+
+	public static abstract class DialogSubmitButton extends EventlessAjaxFormSubmitBehavior implements IDialogButton {
+		private IModel<String> textModel;
+
+		protected DialogSubmitButton(IModel<String> textModel) {
+			this.textModel = textModel;
+		}
+
+		protected DialogSubmitButton(String text) {
+			this.textModel = new Model<String>(text);
+		}
+
+		protected DialogSubmitButton(IModel<String> textModel, Form<?> form) {
+			super(form);
+			this.textModel = textModel;
+		}
+
+		protected DialogSubmitButton(String text, Form<?> form) {
+			super(form);
+			this.textModel = new Model<String>(text);
+		}
+
+		public IModel<String> getTextModel() {
+			return textModel;
+		}
+
+		@Override
+		protected void onError(AjaxRequestTarget target) {
+			Ajax.Feedback.refreshFeedback();
+		}
+	}
+
+	public class CloseButton extends DialogButton {
+		public CloseButton() {
+			super(new StringResourceModel("jquery.dialog.close", JQueryDialog.this, null, ""));
+		}
+
+		public CloseButton(IModel<String> textModel) {
+			super(textModel);
+		}
+
+		public CloseButton(String text) {
+			super(text);
+		}
+
+		@Override
+		protected void onEvent(AjaxRequestTarget target) {
+			JQueryDialog.this.close();
 		}
 	}
 }

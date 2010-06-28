@@ -31,7 +31,7 @@ public class JQueryOptionSerializer<T> {
 			if (readMethod != null) {
 				final JQueryOption annotation = readMethod.getAnnotation(JQueryOption.class);
 				if (annotation != null) {
-					final String name = annotation.name();
+					final String name = annotation.value();
 					final String propName = descriptor.getName();
 					final Option option = isEmpty(name) ? new Option(propName) : new Option(propName, name);
 					optionsProperties.add(option);

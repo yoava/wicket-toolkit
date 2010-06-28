@@ -21,18 +21,39 @@ public class DemoDialog extends JQueryDialog {
 		setTitle("Demo-" + getSession().nextSequenceValue());
 		setShowEffect(JQuery.Effect.PUFF);
 		setHideEffect(JQuery.Effect.PUFF);
+
 		add(new AjaxLink("new") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				new DemoDialog().show();
 			}
 		});
+
 		add(new AjaxLink("refresh") {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				target.addComponent((Component) PluginManager.get());
 			}
 		});
+
 		add(new JQueryDialogCloseLink("close"));
+
+
+		// add buttons
+		add(new DialogButton("New") {
+			@Override
+			protected void onEvent(AjaxRequestTarget target) {
+				new DemoDialog().show();
+			}
+		});
+
+		add(new DialogButton("Refresh") {
+			@Override
+			protected void onEvent(AjaxRequestTarget target) {
+				target.addComponent((Component) PluginManager.get());
+			}
+		});
+
+		add(new CloseButton());
 	}
 }
