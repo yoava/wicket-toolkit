@@ -1,13 +1,18 @@
 package org.wtk.behavior.ajax;
 
-import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.markup.html.form.Form;
 
 /**
  * @author Yoav Aharoni
  */
-public abstract class EventlessAjaxBehavior extends AjaxEventBehavior {
-	public EventlessAjaxBehavior() {
+public abstract class EventlessAjaxFormSubmitBehavior extends AjaxFormSubmitBehavior {
+	public EventlessAjaxFormSubmitBehavior() {
 		super("wtk:ajax");
+	}
+
+	protected EventlessAjaxFormSubmitBehavior(Form form) {
+		super(form, "wtk:ajax");
 	}
 
 	public String getCallFunction() {
