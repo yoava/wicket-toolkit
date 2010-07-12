@@ -182,7 +182,10 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	}
 
 	@JQueryOption("buttons")
-	public JSONObject getButtonsObject() {
+	public JSONObject getButtonsJSONObject() {
+		if (buttons == null) {
+			return null;
+		}
 		final JSONObject jsonObject = new JSONObject();
 		for (IDialogButton button : buttons) {
 			final String text = ModelUtils.toString(button.getTextModel());
