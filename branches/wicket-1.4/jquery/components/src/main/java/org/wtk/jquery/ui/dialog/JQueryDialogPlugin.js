@@ -7,6 +7,9 @@
 		},
 
 		destroy: function() {
+			// fix double overlay destroy bug 
+			this.data('dialog').overlay = null;
+
 			this.dialog('destroy').remove();
 		},
 

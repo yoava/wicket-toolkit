@@ -54,6 +54,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	private String cssClass;
 	private String title;
 	private List<IDialogButton> buttons;
+	boolean opened;
 
 	private boolean bgiFrame = false;
 	private boolean draggable = true;
