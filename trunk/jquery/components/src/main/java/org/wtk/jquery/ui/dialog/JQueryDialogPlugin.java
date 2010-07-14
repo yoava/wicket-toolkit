@@ -35,6 +35,11 @@ public class JQueryDialogPlugin extends Plugin implements IHeaderContributor {
 			return;
 		}
 
+		if (dialog.opened) {
+			return;
+		}
+		dialog.opened = true;
+
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
 		addDialog(dialog);
 		dialog.onShow(target);
@@ -49,6 +54,11 @@ public class JQueryDialogPlugin extends Plugin implements IHeaderContributor {
 			close(wrapper);
 			return;
 		}
+
+		if (!dialog.opened) {
+			return;
+		}
+		dialog.opened = false;
 
 		final AjaxRequestTarget target = AjaxRequestTarget.get();
 		if (target != null) {
@@ -89,6 +99,11 @@ public class JQueryDialogPlugin extends Plugin implements IHeaderContributor {
 			handleCloseButtonClick(wrapper, target);
 			return;
 		}
+
+		if (!dialog.opened) {
+			return;
+		}
+		dialog.opened = false;
 
 		dialog.onCloseButtonClicked(target);
 		dialog.onClose(target);
