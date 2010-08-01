@@ -1,8 +1,8 @@
 package org.wtk.jquery.resource;
 
 import org.wtk.behavior.head.HeadResource;
-import org.wtk.jquery.resource.css.JQueryCommonCss;
-import org.wtk.jquery.resource.css.JQueryDefaultTheme;
+import org.wtk.jquery.theme.common.JQueryCommonCss;
+import org.wtk.jquery.theme.uilightness.JQueryDefaultTheme;
 import org.wtk.resource.WicketToolkitHeadResource;
 
 
@@ -18,7 +18,7 @@ public class JQueryHeadResource extends HeadResource {
 		dependsOn(JQueryCommonCss.get());
 		dependsOn(JQueryDefaultTheme.get());
 
-		addJavaScript("js/jquery-1.4.2.min.js");
+		addJavaScript("jquery-1.4.2.min.js");
 		addJavaScript();
 	}
 
