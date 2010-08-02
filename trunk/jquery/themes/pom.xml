@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.wtk</groupId>
-	<artifactId>wicket-toolkit-jquery-xxx-theme</artifactId>
+	<artifactId>wicket-toolkit-jquery-themes</artifactId>
 	<packaging>pom</packaging>
 	<version>1.2-SNAPSHOT</version>
 
