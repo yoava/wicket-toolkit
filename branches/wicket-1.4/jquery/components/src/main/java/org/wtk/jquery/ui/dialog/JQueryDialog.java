@@ -265,12 +265,12 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 	}
 
 	@JQueryOption("close")
-	public final String getCloseHandlerScript() {
+	public String getCloseHandlerScript() {
 		return closeEvent.getCallFunction();
 	}
 
 	@JQueryOption("open")
-	public final String getOpenHandlerScript() {
+	public String getOpenHandlerScript() {
 		return "function(e, ui) {jQuery.wtk.dialog.onShow(e, ui);}";
 	}
 
