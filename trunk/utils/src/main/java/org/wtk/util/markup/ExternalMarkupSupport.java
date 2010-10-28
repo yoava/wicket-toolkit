@@ -97,11 +97,6 @@ public class ExternalMarkupSupport implements ExternalMarkup {
 		return false;
 	}
 
-	public void clearCache() {
-		final IMarkupCache cache = Application.get().getMarkupSettings().getMarkupCache();
-		cache.
-	}
-
 	public static void clearAllMarkupCache() {
 		Application.get().getMarkupSettings().getMarkupCache().clear();
 	}
