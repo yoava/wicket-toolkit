@@ -1,4 +1,4 @@
-package org.wtk.component.page;
+package org.wtk.component.page.base;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.MarkupContainer;

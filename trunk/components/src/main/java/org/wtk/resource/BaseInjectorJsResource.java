@@ -14,9 +14,10 @@ import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.string.interpolator.MapVariableInterpolator;
 import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.xerces.parsers.DOMParser;
 import org.apache.xml.serialize.Method;
 import org.apache.xml.serialize.OutputFormat;
-import org.cyberneko.html.parsers.DOMParser;
+import org.cyberneko.html.HTMLConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -37,16 +38,17 @@ import java.io.*;
 import java.util.Map;
 
 /**
- * @author Tomer Cohen
+ * @author Yoav Aharoni
  */
-public abstract class BaseInjectorJsResource extends WebResource {
+abstract class BaseInjectorJsResource extends WebResource {
 	private static final Logger log = LoggerFactory.getLogger(BaseInjectorJsResource.class);
+	private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-	public BaseInjectorJsResource() {
+	BaseInjectorJsResource() {
 		setCacheable(false);
 	}
 
-	public abstract String getJavaScriptFilename();
+	protected abstract String getJavaScriptFilename();
 
 	@Override
 	public IResourceStream getResourceStream() {
@@ -88,9 +90,16 @@ public abstract class BaseInjectorJsResource extends WebResource {
 
 	protected abstract Map<String, String> getScriptParameters() throws Exception;
 
+	public String renderPage(Page page) throws SAXException, IOException, XPathExpressionException, TransformerException {
+		Document document = getPageDocument(page);
+		addDefaultNamespaces(document);
+		fixRelativeUrls(document);
+		return serializeDocument(document);
+	}
+
 	protected Document getPageDocument(Page page) throws SAXException, IOException {
 		String markup = getPageMarkup(page);
-		DOMParser parser = new DOMParser();
+		DOMParser parser = new DOMParser(new HTMLConfiguration());
 		parser.parse(new InputSource(new StringReader(markup)));
 		return parser.getDocument();
 	}
@@ -147,6 +156,12 @@ public abstract class BaseInjectorJsResource extends WebResource {
 		return requestURL.substring(0, end);
 	}
 
+	protected void addDefaultNamespaces(Document document) {
+		final Element documentElement = document.getDocumentElement();
+		documentElement.setAttribute("xmlns:wicket", "http://wicket.sourceforge.net/");
+		documentElement.setAttribute("xmlns:wtk", "http://wicket-toolkit.sourceforge.net/");
+	}
+
 	protected String getInnerHtml(String html, String tagName) {
 		tagName = tagName.toUpperCase();
 
@@ -171,8 +186,7 @@ public abstract class BaseInjectorJsResource extends WebResource {
 
 	protected String serializeDocument(Document document) throws IOException, TransformerException {
 		// create transformer
-		TransformerFactory factory = TransformerFactory.newInstance();
-		Transformer transformer = factory.newTransformer();
+		Transformer transformer = transformerFactory.newTransformer();
 		transformer.setOutputProperty(OutputKeys.INDENT, "no");
 		transformer.setOutputProperty(OutputKeys.METHOD, Method.HTML);
 		transformer.setOutputProperty(OutputKeys.MEDIA_TYPE, OutputFormat.whichMediaType(Method.HTML));

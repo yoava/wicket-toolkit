@@ -1,25 +1,21 @@
-var PageInjector = {
-	head: ${head},
-	header: ${header},
-	footer: ${footer},
-
+window.PageInjector = {
 	injectHead: function() {
 		try {
-			document.write(PageInjector.head);
+			document.write(${head});
 		} catch (e) {
 		}
 	},
 
 	injectBodyHeader: function() {
 		try {
-			document.write(PageInjector.header);
+			document.write(${header});
 		} catch (e) {
 		}
 	},
 
 	injectBodyFooter: function() {
 		try {
-			document.write(PageInjector.footer);
+			document.write(${footer});
 		} catch (e) {
 		}
 	}

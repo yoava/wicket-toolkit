@@ -5,7 +5,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
-import org.wtk.component.page.BasePage;
+import org.wtk.component.page.base.BasePage;
 import org.wtk.feedback.FeedbackContainer;
 import org.wtk.feedback.handler.AlertFeedbackHandler;
 import org.wtk.feedback.handler.DistributedFeedbackHandler;
@@ -22,7 +22,7 @@ public class DemoIndexPage extends BasePage {
 		add(AlertFeedbackHandler.get());
 
 
-		new DemoDialog().show();
+		new DemoDialog();
 
 //        wrap(new StyledBorderPanel());
 //        getBodyContainer().add(new CssClass("test"));
@@ -61,5 +61,7 @@ public class DemoIndexPage extends BasePage {
 		field.info("info Test");
 
 		feedback.info("general [[info]]");
+
+		add(new DemoChildPanel("external"));
 	}
 }

@@ -153,4 +153,10 @@ public class JSBuilder implements CharSequence, Appendable, Serializable {
 			script.append(parameters[i]);
 		}
 	}
+
+
+	public static String serialize(Object value) {
+		final JSONArray jsonArray = JSONArray.fromObject(new Object[]{value});
+		return jsonArray.join("");
+	}
 }
