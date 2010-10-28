@@ -40,7 +40,7 @@
 		<module>uidarkness</module>
 		<module>vader</module>
 	</modules>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.wtk</groupId>

@@ -19,5 +19,5 @@
 		<module>core</module>
 		<module>components</module>
 		<module>themes</module>
-  </modules>
+	</modules>
 </project>
