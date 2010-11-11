@@ -22,7 +22,7 @@ public class DemoIndexPage extends BasePage {
 		add(AlertFeedbackHandler.get());
 
 
-		new DemoDialog();
+		new DemoDialog().show();
 
 //        wrap(new StyledBorderPanel());
 //        getBodyContainer().add(new CssClass("test"));
