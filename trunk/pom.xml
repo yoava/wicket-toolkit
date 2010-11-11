@@ -43,7 +43,8 @@
 		<repository>
 			<id>repo.jfrog.org</id>
 			<name>repo.jfrog.org-releases</name>
-			<url>http://repo.jfrog.org/artifactory/third-party-releases-local</url>
+			<!--<url>http://repo.jfrog.org/artifactory/third-party-releases-local</url>-->
+			<url>http://repo.jfrog.org/artifactory/third-party-snapshots-local</url>
 		</repository>
 	</distributionManagement>
 
