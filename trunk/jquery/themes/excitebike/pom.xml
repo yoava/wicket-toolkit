@@ -5,13 +5,13 @@
 	<groupId>org.wtk</groupId>
 	<artifactId>wicket-toolkit-jquery-excite-bike-theme</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2-SNAPSHOT</version>
+	<version>0.6-wicket-1.3-SNAPSHOT</version>
 
 	<name>Wicket Toolkit: jQuery Excite Bike Theme</name>
 
 	<parent>
 		<groupId>org.wtk</groupId>
 		<artifactId>wicket-toolkit-jquery-themes</artifactId>
-		<version>1.2-SNAPSHOT</version>
+		<version>0.6-wicket-1.3-SNAPSHOT</version>
 	</parent>
 </project>

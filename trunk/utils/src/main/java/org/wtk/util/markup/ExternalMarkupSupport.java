@@ -7,6 +7,7 @@ import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.UrlResourceStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.net.www.protocol.file.FileURLConnection;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -78,14 +79,17 @@ public class ExternalMarkupSupport implements ExternalMarkup {
 			try {
 				final URLConnection connection = url.openConnection();
 				if (connection instanceof HttpURLConnection) {
-					HttpURLConnection urlConnection = (HttpURLConnection) connection;
-					urlConnection.connect();
-					int responseCode = urlConnection.getResponseCode();
+					HttpURLConnection httpConnection = (HttpURLConnection) connection;
+					httpConnection.connect();
+					int responseCode = httpConnection.getResponseCode();
 					final boolean statusOk = responseCode == HttpServletResponse.SC_OK;
 					if (!statusOk) {
 						log.warn(String.format("Got status %s while loading \"%s\" URL. Falling back to default markup.", responseCode, url));
 					}
 					return statusOk;
+				} else if (connection instanceof FileURLConnection) {
+					final FileURLConnection fileConnection = (FileURLConnection) connection;
+					fileConnection.connect();
 				} else {
 					return true;
 				}
