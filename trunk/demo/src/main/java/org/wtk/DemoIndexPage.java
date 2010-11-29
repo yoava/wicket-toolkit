@@ -10,6 +10,7 @@ import org.wtk.feedback.FeedbackContainer;
 import org.wtk.feedback.handler.AlertFeedbackHandler;
 import org.wtk.feedback.handler.DistributedFeedbackHandler;
 import org.wtk.jquery.behavior.feedback.FieldMarkerFeedbackHandler;
+import org.wtk.jquery.behavior.feedback.FieldMessageFeedbackHandler;
 import org.wtk.util.Ajax;
 
 /**
@@ -18,11 +19,12 @@ import org.wtk.util.Ajax;
 public class DemoIndexPage extends BasePage {
 	public DemoIndexPage() {
 		add(FieldMarkerFeedbackHandler.get());
+		add(FieldMessageFeedbackHandler.get());
 		add(DistributedFeedbackHandler.get());
 		add(AlertFeedbackHandler.get());
 
 
-		new DemoDialog().show();
+//		new DemoDialog().show();
 
 //        wrap(new StyledBorderPanel());
 //        getBodyContainer().add(new CssClass("test"));
