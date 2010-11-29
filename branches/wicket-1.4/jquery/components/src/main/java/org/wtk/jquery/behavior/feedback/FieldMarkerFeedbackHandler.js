@@ -37,13 +37,14 @@
 		},
 
 		shouldMark: function() {
-			var tagName = this.context.message.reporter.tagName.toLowerCase();
+			var reporter = this.context.message.reporter;
+			var tagName = reporter.tagName.toLowerCase();
 			if (this.tagNames[tagName]) {
 				return true;
 			}
 
 			if (tagName == 'input') {
-				var type = this.context.message.reporter.type.toLowerCase();
+				var type = reporter.type.toLowerCase();
 				return this.inputTypes[type];
 			}
 			return false;
