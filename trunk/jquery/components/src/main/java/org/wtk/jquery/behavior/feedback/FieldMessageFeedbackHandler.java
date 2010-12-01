@@ -2,6 +2,7 @@ package org.wtk.jquery.behavior.feedback;
 
 import org.wtk.feedback.dispatcher.BaseFeedbackHandler;
 import org.wtk.feedback.handler.BaseContainerHandler;
+import org.wtk.jquery.resource.JQueryHeadResource;
 
 /**
  * @author Yoav Aharoni
@@ -21,6 +22,7 @@ public class FieldMessageFeedbackHandler extends BaseFeedbackHandler {
 		this.priority = priority;
 
 		dependsOn(BaseContainerHandler.get());
+		dependsOn(JQueryHeadResource.get());
 		addJavaScript();
 	}
 
