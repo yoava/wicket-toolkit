@@ -41,10 +41,10 @@
 
 	<distributionManagement>
 		<repository>
-			<id>yoava</id>
-			<name>AOL yoava</name>
-			<!--<url>http://yoava.artifactoryonline.com/yoava/libs-releases-local</url>-->
-			<url>http://yoava.artifactoryonline.com/yoava/libs-snapshots-local</url>
+			<id>repo.jfrog.org</id>
+			<name>repo.jfrog.org-releases</name>
+			<!--<url>http://repo.jfrog.org/artifactory/third-party-releases-local</url>-->
+			<url>http://repo.jfrog.org/artifactory/third-party-snapshots-local</url>
 		</repository>
 	</distributionManagement>
 
