@@ -18,7 +18,7 @@ import java.util.List;
  * @author Yoav Aharoni
  */
 public class JsFeedbackDispatcherPlugin extends Plugin<List<FeedbackMessage>> implements IHeaderContributor, IFeedback {
-	static final HeadResource HEAD_RESOURCE = new HeadResource(JsFeedbackDispatcherPlugin.class)
+	public static final HeadResource HEAD_RESOURCE = new HeadResource(JsFeedbackDispatcherPlugin.class)
 			.dependsOn(WicketToolkitHeadResource.get())
 			.addJavaScript();
 

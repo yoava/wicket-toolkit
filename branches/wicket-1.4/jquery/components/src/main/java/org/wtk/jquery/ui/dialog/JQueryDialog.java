@@ -202,6 +202,7 @@ public class JQueryDialog<T extends Serializable> extends BasePanel<T> implement
 			closeText = getSafeString("jquery.dialog.close");
 		}
 		return closeText;
+
 	}
 
 	public JQueryDialog<T> setCloseText(String closeText) {

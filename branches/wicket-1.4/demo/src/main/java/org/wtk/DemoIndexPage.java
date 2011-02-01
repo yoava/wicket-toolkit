@@ -5,11 +5,12 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
-import org.wtk.component.page.BasePage;
+import org.wtk.component.page.base.BasePage;
 import org.wtk.feedback.FeedbackContainer;
 import org.wtk.feedback.handler.AlertFeedbackHandler;
 import org.wtk.feedback.handler.DistributedFeedbackHandler;
 import org.wtk.jquery.behavior.feedback.FieldMarkerFeedbackHandler;
+import org.wtk.jquery.behavior.feedback.FieldMessageFeedbackHandler;
 import org.wtk.util.Ajax;
 
 /**
@@ -18,11 +19,12 @@ import org.wtk.util.Ajax;
 public class DemoIndexPage extends BasePage {
 	public DemoIndexPage() {
 		add(FieldMarkerFeedbackHandler.get());
+		add(FieldMessageFeedbackHandler.get());
 		add(DistributedFeedbackHandler.get());
 		add(AlertFeedbackHandler.get());
 
 
-		new DemoDialog().show();
+//		new DemoDialog().show();
 
 //        wrap(new StyledBorderPanel());
 //        getBodyContainer().add(new CssClass("test"));
@@ -61,5 +63,7 @@ public class DemoIndexPage extends BasePage {
 		field.info("info Test");
 
 		feedback.info("general [[info]]");
+
+		add(new DemoChildPanel("external"));
 	}
 }

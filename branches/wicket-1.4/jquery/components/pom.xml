@@ -19,12 +19,12 @@
 		<dependency>
 			<groupId>org.wtk</groupId>
 			<artifactId>wicket-toolkit-jquery-core</artifactId>
-			<version>${parent.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.wtk</groupId>
 			<artifactId>wicket-toolkit-components</artifactId>
-			<version>${parent.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>org.wtk</groupId>
 			<artifactId>wicket-toolkit-core</artifactId>
-			<version>${parent.version}</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 
 		<dependency>

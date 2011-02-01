@@ -12,7 +12,7 @@ public class JQueryUIHeadResource extends HeadResource {
 	private JQueryUIHeadResource() {
 		super(JQueryUIHeadResource.class);
 		dependsOn(JQueryHeadResource.get());
-		addJavaScript("js/jquery-ui-1.8.2.custom.min.js");
+		addJavaScript("jquery-ui-1.8.2.custom.min.js");
 	}
 
 	public static HeadResource get() {

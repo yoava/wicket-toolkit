@@ -3,8 +3,6 @@ package org.wtk.jquery.model;
 import org.apache.wicket.behavior.IBehavior;
 import org.wtk.behavior.css.CssClass;
 import org.wtk.behavior.head.HeadResource;
-import org.wtk.jquery.resource.css.JQueryUILightnessScopedTheme;
-import org.wtk.jquery.resource.css.JQueryUILightnessTheme;
 import org.wtk.model.HasValue;
 
 import java.util.Arrays;
@@ -48,49 +46,57 @@ public class JQuery {
 	 * @author Yoav Aharoni
 	 */
 	public enum Theme implements HasValue<String> {
-		BLACK_TIE("black-tie", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		BLITZER("blitzer", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		CUPERTINO("cupertino", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		DARK_HIVE("dark-hive", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		DOT_LUV("dot-luv", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		EGGPLANT("eggplant", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		EXCITE_BIKE("excite-bike", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		FLICK("flick", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		HOT_SNEAKS("hot-sneaks", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		HUMANITY("humanity", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		LE_FROG("le-frog", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		MINT_CHOC("mint-choc", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		NO_THEME("no-theme", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		OVERCAST("overcast", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		PEPPER_GRINDER("pepper-grinder", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		REDMOND("redmond", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		SMOOTHNESS("smoothness", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		SOUTH_STREET("south-street", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		START("start", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		SUNNY("sunny", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		SWANKY_PURSE("swanky-purse", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		TRONTASTIC("trontastic", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		UI_DARKNESS("ui-darkness", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		UI_LIGHTNESS("ui-lightness", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get()),
-		VADER("vader", JQueryUILightnessTheme.get(), JQueryUILightnessScopedTheme.get());
+		BLACK_TIE("black-tie", "Black Tie"),
+		BLITZER("blitzer", "Blitzer"),
+		CUPERTINO("cupertino", "Cupertino"),
+		DARK_HIVE("dark-hive", "Dark Hive"),
+		DOT_LUV("dot-luv", "Dot Luv"),
+		EGGPLANT("eggplant", "Eggplant"),
+		EXCITE_BIKE("excite-bike", "Excite Bike"),
+		FLICK("flick", "Flick"),
+		HOT_SNEAKS("hot-sneaks", "Hot Sneaks"),
+		HUMANITY("humanity", "Humanity"),
+		LE_FROG("le-frog", "Le Frog"),
+		MINT_CHOC("mint-choc", "Mint Choc"),
+		NO_THEME("no-theme", "No Theme"),
+		OVERCAST("overcast", "Overcast"),
+		PEPPER_GRINDER("pepper-grinder", "Pepper Grinder"),
+		REDMOND("redmond", "Redmond"),
+		SMOOTHNESS("smoothness", "Smoothness"),
+		SOUTH_STREET("south-street", "South Street"),
+		START("start", "Start"),
+		SUNNY("sunny", "Sunny"),
+		SWANKY_PURSE("swanky-purse", "Swanky Purse"),
+		TRONTASTIC("trontastic", "Trontastic"),
+		UI_DARKNESS("ui-darkness", "UI Darkness"),
+		UI_LIGHTNESS("ui-lightness", "UI Lightness"),
+		VADER("vader", "Vader");
+
+		private String name;
+		private String displayName;
 		private HeadResource globalResource;
 		private HeadResource scopedResource;
 
-		private String theme;
-
-		Theme(String theme, HeadResource globalResource, HeadResource scopedResource) {
-			this.theme = theme;
-			this.globalResource = globalResource;
-			this.scopedResource = scopedResource;
+		Theme(String name, String displayName) {
+			this.name = name;
+			this.displayName = displayName;
 		}
 
 		public IBehavior createCssScopeBehavior() {
-			return new CssClass("." + theme);
+			return new CssClass("." + name);
 		}
 
 		@Override
 		public String getValue() {
-			return theme;
+			return name;
+		}
+
+		public String getThemeName() {
+			return name;
+		}
+
+		public String getDisplayName() {
+			return displayName;
 		}
 
 		public HeadResource getGlobalResource() {

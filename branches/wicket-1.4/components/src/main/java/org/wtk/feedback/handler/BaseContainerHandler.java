@@ -1,6 +1,7 @@
 package org.wtk.feedback.handler;
 
 import org.wtk.behavior.head.HeadResource;
+import org.wtk.feedback.dispatcher.JsFeedbackDispatcherPlugin;
 
 /**
  * @author Yoav Aharoni
@@ -10,6 +11,7 @@ public class BaseContainerHandler extends HeadResource {
 
 	private BaseContainerHandler() {
 		super(BaseContainerHandler.class);
+		dependsOn(JsFeedbackDispatcherPlugin.HEAD_RESOURCE);
 		addJavaScript();
 	}
 
