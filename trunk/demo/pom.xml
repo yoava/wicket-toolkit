@@ -2,56 +2,57 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.wtk</groupId>
-	<artifactId>wicket-toolkit-demo</artifactId>
-	<packaging>war</packaging>
-	<version>0.6-wicket-1.3-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wtk</groupId>
+    <artifactId>wicket-toolkit-demo</artifactId>
+    <packaging>war</packaging>
+    <version>0.6-wicket-1.3-SNAPSHOT</version>
 
-	<name>Wicket Toolkit: Demo Application</name>
+    <name>Wicket Toolkit: Demo Application</name>
 
-	<parent>
-		<groupId>org.wtk</groupId>
-		<artifactId>wicket-toolkit-parent</artifactId>
-		<version>0.6-wicket-1.3-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>org.wtk</groupId>
+        <artifactId>wicket-toolkit-parent</artifactId>
+        <version>0.6-wicket-1.3-SNAPSHOT</version>
+    </parent>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.wtk</groupId>
-			<artifactId>wicket-toolkit-jquery-components</artifactId>
-			<version>${parent.version}</version>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.wtk</groupId>
+            <artifactId>wicket-toolkit-jquery-components</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.wtk</groupId>
-			<artifactId>wicket-toolkit-components</artifactId>
-			<version>${parent.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.wtk</groupId>
+            <artifactId>wicket-toolkit-components</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jetty</artifactId>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.25</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

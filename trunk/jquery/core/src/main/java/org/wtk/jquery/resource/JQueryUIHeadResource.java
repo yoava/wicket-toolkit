@@ -7,15 +7,15 @@ import org.wtk.behavior.head.HeadResource;
  * @author Yoav Aharoni
  */
 public class JQueryUIHeadResource extends HeadResource {
-	private static final JQueryUIHeadResource INSTANCE = new JQueryUIHeadResource();
+    private static final JQueryUIHeadResource INSTANCE = new JQueryUIHeadResource();
 
-	private JQueryUIHeadResource() {
-		super(JQueryUIHeadResource.class);
-		dependsOn(JQueryHeadResource.get());
-		addJavaScript("jquery-ui-1.8.2.custom.min.js");
-	}
+    private JQueryUIHeadResource() {
+        super(JQueryUIHeadResource.class);
+        dependsOn(JQueryHeadResource.get());
+        addJavaScript("jquery-ui-1.8.9.custom.min.js");
+    }
 
-	public static HeadResource get() {
-		return INSTANCE;
-	}
+    public static HeadResource get() {
+        return INSTANCE;
+    }
 }
