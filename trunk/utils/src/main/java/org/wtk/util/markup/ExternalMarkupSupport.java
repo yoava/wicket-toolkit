@@ -50,7 +50,7 @@ public class ExternalMarkupSupport implements ExternalMarkup {
 
 	public ExternalMarkupSupport setUrl(String url) {
 		try {
-			this.url = new URL(url);
+			setUrl(new URL(url));
 		} catch (MalformedURLException e) {
 			throw new IllegalArgumentException("Malformed URL " + url, e);
 		}
