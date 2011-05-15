@@ -6,6 +6,7 @@ import org.apache.wicket.feedback.FeedbackMessagesModel;
 import org.apache.wicket.feedback.IFeedback;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.model.IModel;
 import org.wtk.behavior.head.HeadResource;
 import org.wtk.component.support.plugin.Plugin;
 import org.wtk.resource.WicketToolkitHeadResource;
@@ -81,7 +82,7 @@ public class JsFeedbackDispatcherPlugin extends Plugin<List<FeedbackMessage>> im
 		return "";
 	}
 
-	protected FeedbackMessagesModel newFeedbackMessagesModel() {
+	protected IModel<List<FeedbackMessage>> newFeedbackMessagesModel() {
 		return new FeedbackMessagesModel(this);
 	}
 }
